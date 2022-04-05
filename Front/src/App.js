@@ -18,6 +18,21 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Myproducts from './pages/myproducts';
 
+import AddLivreur from './pages/Livreur/AddLivreur';
+import Listlivreur from './pages/Livreur/ListLivreur';
+import AdminLivreur from './pages/Livreur/LivreurBack';
+import DetailLivreur from './pages/Livreur/LivreurDetails';
+import Profil from './pages/Livreur/Profil';
+import ProfilP from './pages/Livreur/ProfilP';
+
+import AjoutService from './pages/Service/AddService';
+import Listservice from './pages/Service/AffServices';
+import DetailServices from './pages/Service/DetailService';
+import Mailer from './pages/Service/Mailer';
+import Email from './pages/Livreur/Mailer';
+import Login from './pages/Livreur/Login';
+
+
 
 function App() {
   return (
@@ -42,6 +57,19 @@ function App() {
           <Route path='/viewcomposant/:id' element={<DetailCompoBack/>} />
           <Route path='/viewcomposantfront/:id' element={<ComposantDetailFront/>} />
 
+          <Route path='/list' element={<Listlivreur/>} />
+          <Route path='/add' element={<AddLivreur/>} />  
+          <Route path='/livreurBack' element={<AdminLivreur/>} />  
+          <Route path='/DetailLivreur/:id' element={<DetailLivreur/>} />
+          <Route path='/profil/:id' element={<Profil/>} />  
+          <Route path='/profilp' element={<ProfilP/>} />  
+
+          <Route path='/AjoutService' element={<AjoutService/>} />  
+          <Route path='/listService' element={<Listservice/>} />
+          <Route path='/detailServices/:id' element={<DetailServices/>} />    
+          <Route path='/mail' element={<Mailer/>} />
+          <Route path='/email' element={<Email/>} />
+          <Route path='/' element={<Login/>} />
 
       </Routes>
       </BrowserRouter>

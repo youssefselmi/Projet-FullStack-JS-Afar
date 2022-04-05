@@ -13,6 +13,9 @@ var composantRouter = require('./routes/composant');
 var pieceRouter = require('./routes/piece');
 var itemRouter = require('./routes/items');
 
+var livreurRouter = require('./routes/livreur');
+var serviceRouter = require('./routes/services');
+
 
 var app = express();
 
@@ -36,6 +39,10 @@ app.use('/contact', contactRouter);
 app.use('/composant', composantRouter);
 app.use('/piece', pieceRouter);
 app.use('/items',itemRouter);
+app.use('/livreur', livreurRouter);
+app.use('/service', serviceRouter);
+
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "uploads")));
 app.use(cors());
