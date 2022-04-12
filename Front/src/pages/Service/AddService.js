@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios'
-import { useHistory, useNavigate } from "react-router-dom";
+import { Link,useHistory, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
 
@@ -18,10 +18,11 @@ export default function AjoutService (props){
     city:"",
     zipcode:"",
     description:"",
+    disponibility:"",
     
   });
 
-  var { type,title,maxPart,governorate,city,zipcode,description} = service;
+  var { type,title,maxPart,governorate,city,zipcode,description,disponibility} = service;
   var onInputChange = e => {
     setservice({ ...service, [e.target.name]: e.target.value });
     
@@ -793,6 +794,16 @@ export default function AjoutService (props){
                                     placeholder="Service description"
                                     value={description} onChange={e => onInputChange(e)}
                                   />
+                                  <div className="mb-6">
+                                <h6 className="col-2">Disponibility  :</h6>
+                                  <textarea
+                                    className="form-control"
+                                    name="disponibility"
+                                    rows={5}
+                                    placeholder="disponiblity"
+                                    value={disponibility} onChange={e => onInputChange(e)}
+                                  />
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -805,13 +816,15 @@ export default function AjoutService (props){
                            
                             </div>
                             <div className="col-10">
-                            <button
-                                type="button"
-                                className="btn btn-secondary waves-effect waves-light"
-                                style={{marginRight:"10px"}}
-                              >
-                                Cancel
-                              </button>
+                            <Link to={`/listService`}>
+                        <button
+                            type="button"
+                            className="btn btn-secondary waves-effect waves-light"
+                            style={{marginRight:"10px"}}
+                          >
+                            Cancel
+                          </button>
+                          </Link>
                               <button  type="submit" className="btn btn-success">
                                 add service
                               </button>

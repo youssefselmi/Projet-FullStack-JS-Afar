@@ -8,7 +8,8 @@ var serviceSchema = new mongoose.Schema({
     description : String,
     governorate :String,
      city: String,
-     zipcode : Number
+     zipcode : Number,
+     disponibility : String
      
        
 }); 

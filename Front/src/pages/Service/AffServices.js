@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import CreateIcon from '@mui/icons-material/Create';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
   export default function Listservice(props) {
@@ -439,8 +441,10 @@ import { Link } from "react-router-dom";
         
                                 <div className="flex-grow-1 overflow-hidden">
                               
-                                  <h5 className="text-truncate font-size-15"><a href="javascript: void(0);" className="text-dark">{livreur.nom}</a></h5>
-                              
+                                <div className="add_btn">
+              <Link to={`/updateservice/${livreur._id}`}>  <button className="btn btn-link btn-sm mx-2"><CreateIcon /></button></Link>
+              <button className="btn btn-li,k btn-sm mx-2" ><DeleteOutlineIcon /></button>
+              </div>
                                   <p className="text-muted mb-4">{livreur.title}</p>
                                   <p className="text-muted mb-4">22 474 153</p>
                                   <div className="avatar-group">
@@ -471,7 +475,9 @@ import { Link } from "react-router-dom";
                                     <Link to={`/DetailServices/${livreur._id}`}>
                                       <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">+info</button>
                                       </Link>
+                                      
                                     </li>
+                                   
                                   </ul>
                                 </div>
                               </div>

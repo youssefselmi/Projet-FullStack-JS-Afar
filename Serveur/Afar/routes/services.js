@@ -49,6 +49,7 @@ router.post('/add', function(req, res, next) {
         governorate : req.body.governorate,
         city:req.body.city,
         zipcode: req.body.zipcode,    
+        disponibility: req.body.disponibility,
    
 
              })
@@ -63,6 +64,23 @@ router.post('/add', function(req, res, next) {
                }
              );
             })
+
+
+            router.patch("/updateservice/:id", async(req, res) => {
+              try {
+                  const { id } = req.params;
+          
+                  const updateservice = await Service.findByIdAndUpdate(id, req.body, {
+                      new: true
+                  });
+          
+                  console.log(updateservice);
+                  res.status(201).json(updateservice);
+          
+              } catch (error) {
+                  res.status(422).json(error);
+              }
+          })
 
 
 module.exports = router;

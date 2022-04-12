@@ -368,6 +368,7 @@ const ListServicebackend = () => {
                                                         <th>governorate</th>
                                                         <th>city</th>
                                                         <th>zipcode</th>
+                                                        <th>disponibility</th>
                                                         <th>Actions</th>
 
 
@@ -388,6 +389,8 @@ const ListServicebackend = () => {
                                                                 <td>{service.governorate}</td>
                                                                 <td>{service.city}</td>
                                                                 <td>{service.zipcode}</td>
+                                                                <td>{service.disponibility}</td>
+                                                                
 
 
 

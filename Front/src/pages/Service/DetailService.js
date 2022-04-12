@@ -364,6 +364,7 @@ const DetailServices = () => {
                                                                 <img src="assets/images/users/avatar-5.jpg"  alt="" className="rounded-circle avatar-md height=30" />
                                                                     <h3 className="mt-3">Type: <span >{getuserdata.type}</span></h3>
                                                                     <p className="mt-3">Max Number of Participants: <span>{getuserdata.maxPart}</span></p>
+                                                                    <p className="mt-3">Disponibility: <span>{getuserdata.disponibility}</span></p>
                                                                     <p className="mt-3"><WorkIcon />Description: <span>{getuserdata.description}</span></p>
                                                                     <ul className="list-inline mb-0">
                                     
