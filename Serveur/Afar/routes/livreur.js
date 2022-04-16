@@ -54,24 +54,7 @@ router.get('/:id', function(req, res, next) {
         );
     })
 
-router.get('/delete/:id', function(req, res, next) {
-  Livreur.findByIdAndRemove(req.params.id,function(err,docs){
-    if(err)
-    console.log(err);
-    
-    return res.status(200).json({
-      success:true,
-  })
 
-  }) });
-  router.post('/delete3/:id', function(req,res,next){
-    Livreur.findByIdAndRemove(req.params.id, 
-        function (err, docs) {
-          if (err)
-              console.log(err);
-          res.send("Livreur deleted");
-      })
-  });
 
   router.delete('/supprimer/:id',async(req,res)=>{
     Livreur.findByIdAndRemove(req.params.id,function(err,docs){
@@ -84,14 +67,7 @@ router.get('/delete/:id', function(req, res, next) {
   
     })
 });
-  router.get('/delete2/:id', function(req, res, next) {
-    Livreur.findById({_id:req.params.id},function(err,docs){
-      if(err)
-      console.log(err);
-      doc.remove(function(err,Livreur){
-        res.redirect('/Livreur');
-      
-    }) }) });
+
   
 router.post('/add', upload.single("photo"),function(req, res, next) {
     new Livreur({
@@ -121,31 +97,26 @@ router.post('/add', upload.single("photo"),function(req, res, next) {
              );
             })
             
-             //edit
-            router.post('/edit/:id', function (req, res, next) {
-                console.log("edit");
-                console.log(req.body);
-                console.log("######");
-              
-                Offer.exists({ _id: req.params.id },
-                  (err, result) => { /*  */
-                    console.log("result " + result); /* res.json(livreurs)  */
-                    console.log(result);
-              
-                    if (result) {
-                      console.log("true");
-                      Offer.updateOne({ _id: req.params.id }, { $set: req.body }, (err, data) => {
-                        console.log(data);
-                        // res.redirect('/livreur');
-                        res.json(" : Livreur :" + Offer._id + " updated"); 
-            
-                      });
-                      // res.json(result)
-                    } else {
-                      console.log("false");
-                      res.json(result)
-              
-                    }
+            router.put('/update', async(req, res) => {
+              const newlivreurtName = req.body.newlivreurtName;
+          
+              const id = req.body.id;
+          
+              try {
+          
+                  await livreur.findById(id, (err, updatedlivreur) => {
+          
+                    updatedlivreur.Name = newlivreurtName;
+          
+                    updatedlivreur.save();
+                      res.send("update");
+                  });
+          
+              } catch (err) {
+                  console.log(err);
+              }
+          });
+          
               
                   }
                 );
