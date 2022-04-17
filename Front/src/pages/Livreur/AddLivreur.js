@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import axios from 'axios'
 import { useHistory ,useNavigate} from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
+
+
+function onChange(value){
+    
+}
 
 export default function AddLivreur (props){
   const history = useNavigate();
@@ -9,16 +15,17 @@ export default function AddLivreur (props){
     prenom: "",
     num:"",
     addr:"",
-    veicule:"",
     password:"",
     region:"",
     modele:"",
     email:"",
     type:"",
+    age:"",
+    disponibilite:"",
     picture:"",
   });
 
-  var { nom, prenom, num, addr,password,region,modele,type ,email,picture} = livreur;
+  var { nom, prenom, num,disponibilite,age, addr,password,region,modele,type ,email,picture} = livreur;
   var onInputChange = e => {
     setlivreur({ ...livreur, [e.target.name]: e.target.value });
     
@@ -30,7 +37,7 @@ export default function AddLivreur (props){
     await axios.post("http://localhost:3000/livreur/add", livreur);
     
     alert("votre livreur a ete ajoute")
-    history("/home")
+    history("/list")
 
   };
   return (
@@ -86,11 +93,19 @@ export default function AddLivreur (props){
                           Please Enter First name
                         </div>  
                       </div>
+                    
                       <div className="mb-3">
                         <label htmlFor="lastname" className="form-label">Last Name</label>
                         <input type="text" className="form-control" name="prenom"  value={prenom} onChange={(e) => onInputChange(e)} placeholder="Enter Last Name" required />
                         <div className="invalid-feedback">
                           Please Enter Last name
+                        </div>  
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="age" className="form-label">Age</label>
+                        <input type="text" className="form-control" name="age"  value={age} onChange={(e) => onInputChange(e)} placeholder="Enter Last Name" required />
+                        <div className="invalid-feedback">
+                          Please Enter Your Age
                         </div>  
                       </div>
                       <div className="mb-3">
@@ -125,14 +140,28 @@ export default function AddLivreur (props){
                           <option value="Volswagen">Volswagen</option>
                           <option value="Ford">Ford</option>
                         </select>
-                        <select name="model" value={modele} onChange={(e) => onInputChange(e)} required  >
+                          <select name="modele" value={modele} onChange={(e) => onInputChange(e)} required  >
                           <option value>Please choose Model</option>
-                          <option value="dog">2010</option>
+                          <option value="2010">2010</option>
                           <option value="2011">2011</option>
                           <option value="2012">2012</option>
                           <option value="2013">2013</option>
                         </select>
-                      </div>     
+                      </div>   
+                      
+                     
+                      
+                      <div className="mb-3">
+                     <label htmlFor="disponibilite">disponibilite</label>
+                   
+                          <select name="disponibilite" value={disponibilite} onChange={(e) => onInputChange(e)} required  >
+                          <option value>Please choose Model</option>
+                          <option value="all day">all day</option>
+                          <option value="afternoon">afternoon</option>
+                          <option value="the morning">the morning</option>
+                          <option value="weekend">weekend</option>
+                        </select>                     
+                     </div>  
                       <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email</label>
                         <input type="email" className="form-control" value={email} onChange={(e) => onInputChange(e)}  name="email" placeholder="Enter email" required />  
@@ -154,6 +183,12 @@ export default function AddLivreur (props){
                           Please Chose a Picture
                         </div>       
                       </div>
+                      <div className="col-6">
+                            <ReCAPTCHA 
+                             sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                             onChange={onChange}
+                              />,
+                              </div>
                       
                       <div className="mt-4 d-grid">
                         <button className="btn btn-primary waves-effect waves-light" type="submit">Register</button>

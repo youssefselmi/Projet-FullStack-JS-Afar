@@ -40,23 +40,7 @@ router.get('/:id',async(req,res)=>{
   }
 })
 
-
-router.get('/:id', function(req, res, next) {
-  Livreur.findById( req.params.id,(err, livreurs) => {
-    res.render(
-        'form.twig',
-             { title2 :
-    "Recherche par id ", livreurById :
-    livreurs
-             }
-           );
-        }
-        );
-    })
-
-
-
-  router.delete('/supprimer/:id',async(req,res)=>{
+router.delete('/supprimer/:id',async(req,res)=>{
     Livreur.findByIdAndRemove(req.params.id,function(err,docs){
       if(err)
       console.log(err);
@@ -81,6 +65,8 @@ router.post('/add', upload.single("photo"),function(req, res, next) {
     region: req.body.region,    
     modele: req.body.modele,
     type: req.body.type,
+    age: req.body.age,
+    disponibilite: req.body.disponibilite,
     password:req.body.password,
 
 
@@ -97,30 +83,5 @@ router.post('/add', upload.single("photo"),function(req, res, next) {
              );
             })
             
-            router.put('/update', async(req, res) => {
-              const newlivreurtName = req.body.newlivreurtName;
-          
-              const id = req.body.id;
-          
-              try {
-          
-                  await livreur.findById(id, (err, updatedlivreur) => {
-          
-                    updatedlivreur.Name = newlivreurtName;
-          
-                    updatedlivreur.save();
-                      res.send("update");
-                  });
-          
-              } catch (err) {
-                  console.log(err);
-              }
-          });
-          
-              
-                  }
-                );
-              
-              });
 
 module.exports = router;

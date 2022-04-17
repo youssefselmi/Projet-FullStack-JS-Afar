@@ -13,7 +13,9 @@ var Livreur = new Schema ({
    type : String,
     modele:String , 
      picture : String,
-    email: String,   
+    email: String,  
+    age:Number,
+    disponibilite:String, 
    password : String
 
 }); 
