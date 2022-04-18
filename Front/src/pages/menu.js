@@ -13,20 +13,38 @@ class menu extends React.Component{
     <div id="sidebar-menu">
        
         <ul class="metismenu list-unstyled" id="side-menu">
-            
-
-            
-
-            <li class="menu-title" key="t-apps">Apps</li>
-            <li>
+        <li class="menu-title" key="t-apps">Menu</li>
+         <li>
                 <a href="myproducts" class="waves-effect">
-                    <i class="bx bx-chat"></i>
+                    <i class="bx bx-user"></i>
                     <span key="t-chat">MY ITEMS</span>
                 </a>
             </li>
+        <li>
+                <a href="addComposant" class="waves-effect">
+                    <i class="bx bx-file"></i>
+                    
+                    <span key="t-file-manager">Broken Piece</span>
+                </a>
+            </li>
+
+            
+
+            <li>
+                <a href="afficher" class="waves-effect">
+                    <i class="bx bx-chat"></i>
+                    <span key="t-chat">BROKEN ITEMS</span>
+                </a>
+            </li>
+            
+
+            
+
+           
+           
             <li>
                 <a href="Home" class="waves-effect">
-                    <i class="bx bx-chat"></i>
+                    <i class="bx bx-band-aid"></i>
                     <span key="t-chat">SELL ITEMS</span>
                 </a>
             </li>
@@ -37,20 +55,17 @@ class menu extends React.Component{
                 </a>
             </li>
 
+           
             <li>
-                <a href="addComposant" class="waves-effect">
-                    <i class="bx bx-file"></i>
-                    
-                    <span key="t-file-manager">Sell A Broken Piece</span>
+                <a href="list" class="waves-effect">
+                    <i class="bx bx-car"></i>
+                    <span key="t-chat">Delivery</span>
                 </a>
             </li>
-
-            
-
             <li>
-                <a href="afficher" class="waves-effect">
-                    <i class="bx bx-chat"></i>
-                    <span key="t-chat">BROKEN ITEMS</span>
+                <a href="listService" class="waves-effect">
+                    <i class="bx bx-book"></i>
+                    <span key="t-chat"> Services</span>
                 </a>
             </li>
 

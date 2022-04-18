@@ -508,7 +508,7 @@ class afficheproducts extends React.Component{
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="product-img position-relative">
-                                                    <img src={`http://localhost:3000/${path}`} />
+                                                    <img height='220' width='220' src={`http://localhost:3000/${path}`} />
                                              
 
                                                     

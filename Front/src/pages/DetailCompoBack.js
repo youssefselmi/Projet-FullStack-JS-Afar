@@ -1,33 +1,28 @@
 import React , {useState,useEffect,useContext} from "react";
 import {BrowserRouter, Route, Link, useNavigate,NavLink,useParams} from "react-router-dom";
 import "./listecomposant.css";
-
-import CreateIcon from '@mui/icons-material/Create';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import WorkIcon from '@mui/icons-material/Work';
-import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { CardTravel, PaidRounded } from "@mui/icons-material";
 
 
-
+///////////////////////////////////////////
+import axios from "axios";
+import "./payment.css";
+/////////////////////////////////////////////////////////
 const DetailCompoBack = () => {
 
 
+
+const PF= process.env.REACT_APP_PUBLIC_FOLDER;
+console.log(PF);
+
     const [getuserdata, setUserdata] = useState([]);
     console.log(getuserdata);
-
     const { id } = useParams("");
     console.log(id);
-
     const history = useNavigate();
-
-
     const getdata = async () => {
-
         const res = await fetch(`http://localhost:3000/composant/find/${id}`, {
             method: "GET",
             headers: {
@@ -75,37 +70,53 @@ const DetailCompoBack = () => {
 
 
 
+    ////////////////////////////////////// Payment //////////////////////////////////
+    const initPayment = (data) => {
+		const options = {
+			key: "rzp_test_NDxygbn7Cd7N9l",
+			amount: data.amount,
+			currency: data.currency,
+			name: getuserdata.Name,
+			description: getuserdata.Etat,
+			image: PF+getuserdata.Image,
+			order_id: data.id,
+			handler: async (response) => {
+				try {
+					const verifyUrl = "http://localhost:3000/api/payment/verify";
+					const { data } = await axios.post(verifyUrl, response);
+					console.log(data);
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			theme: {
+				color: "#3399cc",
+			},
+		};
+		const rzp1 = new window.Razorpay(options);
+		rzp1.open();
+	};
 
 
+    const handlePayment = async () => {
+		try {
+			const orderUrl = "http://localhost:3000/api/payment/orders";
+			const { data } = await axios.post(orderUrl, { amount: getuserdata.Prix });
+			console.log(data);
+			initPayment(data.data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 
     return(
         <div>
-
-
-
-
-
             <div id="layout-wrapper">
-
-
                 <header id="page-topbar">
-
                     <div class="d-flex">
-
                         <div class="navbar-brand-box">
                             <a href="index.html" class="logo logo-dark">
                     <span class="logo-sm">
@@ -115,6 +126,8 @@ const DetailCompoBack = () => {
                     <img src="assets/images/loogo.png" alt="" height="55"/>
                     </span>
                             </a>
+
+                            
 
                             <a href="index.html" class="logo logo-light">
                     <span class="logo-sm">
@@ -355,7 +368,7 @@ const DetailCompoBack = () => {
                             <div class="row">
                                 <div class="col-12">
                                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                        <h4 class="mb-sm-0 font-size-18 text-center">Liste Composant</h4>
+                                        <h4 class="mb-sm-0 font-size-18 text-center">Detail de la Piece</h4>
 
 
 
@@ -386,7 +399,6 @@ const DetailCompoBack = () => {
                                                         Return To list 
                                                     </button>
                                                 </Link>
-                                                <h4 className="card-title">Detail</h4>
 
 
 
@@ -403,15 +415,10 @@ const DetailCompoBack = () => {
                                                 <div className="container mt-3">
                                                     <h1 style={{ fontWeight: 400 }}>{getuserdata.Name}</h1>
 
-                                                    <Card sx={{ maxWidth: 600 }}>
-                                                        <CardContent>
-                                                            <div className="add_btn">
-                                                                <NavLink to={`/updateCompo/${getuserdata.id}`}>  <button className="btn btn-primary mx-2"><Commande /></button></NavLink>
-                                                                <button className="btn btn-danger" onClick={() => deleteuser(getuserdata.id)}><PaidRounded /></button>
-                                                            </div>
+                                                           
                                                             <div className="row">
                                                                 <div className="left_view col-lg-6 col-md-6 col-12">
-                                                                    <img src= {getuserdata.Image} style={{ width: 50 }} alt="profile" />
+                                                                    <img src={PF+getuserdata.Image} style={{ width: 50 }} alt="profile" />
                                                                     <h3 className="mt-3">Name: <span >{getuserdata.Name}</span></h3>
                                                                     <p className="mt-3"><MailOutlineIcon />Description: <span>{getuserdata.Description}</span></p>
                                                                     <p className="mt-3"><WorkIcon />Marque: <span>{getuserdata.Marque}</span></p>
@@ -419,13 +426,14 @@ const DetailCompoBack = () => {
                                                                 <div className="right_view  col-lg-6 col-md-6 col-12">
 
                                                                     <p className="mt-5">Etat: <span> {getuserdata.Etat}</span></p>
-                                                                    <p className="mt-3">Prix: <span>{getuserdata.Prix}  DT </span></p>
+                                                                    <p className="book_price">Prix: <span>{getuserdata.Prix}  DT </span></p>
                                                                     <p className="mt-3">Description: <span>{getuserdata.Description}</span></p>
                                                                 </div>
                                                             </div>
+                                                            <div >
+                                                                 <button onClick={handlePayment} className="btn buy_btn mx-2"><PaidRounded /> Buy Now!</button>
+                                                            </div>
 
-                                                        </CardContent>
-                                                    </Card>
                                                 </div>
 
 

@@ -6,7 +6,7 @@ import { NavLink, useHistory } from 'react-router-dom'
 import { adddata } from './context/ContextProvider';
 
 import {toast} from "react-toastify";
-
+import axios from "axios"
 
 const AjoutComposant = () => {
 
@@ -47,7 +47,7 @@ const AjoutComposant = () => {
 
         const { Name,Etat,Marque,Description,Image,Prix,Livraison } = inpval;
 
-        alert("assets/images/product/"+Image.substr(12));
+       // alert("assets/images/product/"+Image.substr(12));
        let  pathimage="assets/images/product/"+Image.substr(12);
 
 
@@ -62,23 +62,23 @@ const AjoutComposant = () => {
         });
 
 
-
+        console.log(res);
 
 
         const data = await res.json();
-        console.log(data);
+      
 
 
         if (res.status === 422 || !data) {
-            console.log("error ");
+         
             alert("error");
 
         } else {
-            history("/listecomposant")
-            toast.success("Added");
+         
+           history("/listecomposant")
+            toast.success("Piece Ajoute Avec Succes");
         }
 
-        toast.success("Added");
 
 
 
@@ -365,7 +365,7 @@ const AjoutComposant = () => {
                             <div class="row">
                                 <div class="col-12">
                                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                        <h4 class="mb-sm-0 font-size-18 text-center">New Broken Piece</h4>
+                                        <h4 class="mb-sm-0 font-size-18 text-center">Edit Composant</h4>
                                     </div>
                                 </div>
                             </div>
@@ -382,11 +382,11 @@ const AjoutComposant = () => {
                                         <div className="card">
                                             <div className="card-body">
 
-                                                <Link to={`/listecomposant/`}>
+                                                <Link to={`/add/`}>
 
                                                     <button  type="button" className="btn btn-danger btn-block waves-effect waves-light rog "
                                                              data-bs-toggle="modal" data-bs-target="#composemodal">
-                                                        Liste Broken Pieces
+                                                        Add New Piece
                                                     </button>
                                                 </Link>
                                                 <h4 className="card-title">Add New Piece</h4>
@@ -465,7 +465,7 @@ const AjoutComposant = () => {
                                                         <div className="mb-3 col-lg-6 col-md-6 col-12">
 
                                                         <label htmlFor="avatar">Choose a  picture:</label>
-                                                        <input type="file" class="btn btn-danger btn-block waves-effect waves-light rog"
+                                                        <input type="file"
                                                                 name="Image" value={inpval.Image} onChange={setdata}/>
                                                         </div>
 

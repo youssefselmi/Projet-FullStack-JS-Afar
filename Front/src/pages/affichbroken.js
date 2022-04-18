@@ -2,23 +2,33 @@ import React, {useContext, useEffect, useState} from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import "./listecomposant.css";
 import axios from "axios";
-
+// Using an ES6 transpiler like Babel
+import Slider from 'react-rangeslider'
+ 
+// To include the default styles
+import 'react-rangeslider/lib/index.css'
+ 
 
 const Affichbroken = () => {
 
     const [data, setData] = useState([]);
+    const [filterprix,setFilterPrix] = useState(0);
 
     useEffect(() => {
-            getComposants();
-        }, []
+            getComposants(filterprix);
+        }, [filterprix]
     );
 
+    const handleFilter = (value)=>{
+        setFilterPrix(value);
+
+    }
 
 
-    const getComposants = async () => {
+    const getComposants = async (filterprix) => {
         const response = await axios.get("http://localhost:3000/composant/readcomposants");
         if (response.status === 200) {
-            setData(response.data);
+            setData(response.data.filter(c=>c.Prix >= filterprix));
         }
     };
 
@@ -334,22 +344,19 @@ const Affichbroken = () => {
                                             <div class="card-body">
                                                 <h4 class="card-title mb-4">Filter</h4>
 
-                                                <div>
-                                                    <h5 class="font-size-14 mb-3">Clothes</h5>
-                                                    <ul class="list-unstyled product-list">
-                                                        <li><a href="#/"><i
-                                                            class="mdi mdi-chevron-right me-1"></i> T-shirts</a></li>
-                                                        <li><a href="#/"><i
-                                                            class="mdi mdi-chevron-right me-1"></i> Shirts</a></li>
-                                                        <li><a href="#/"><i
-                                                            class="mdi mdi-chevron-right me-1"></i> Jeans</a></li>
-                                                        <li><a href="#/"><i
-                                                            class="mdi mdi-chevron-right me-1"></i> Jackets</a></li>
-                                                    </ul>
-                                                </div>
+                                        
                                                 <div class="mt-4 pt-3">
                                                     <h5 class="font-size-14 mb-3">Price</h5>
-                                                    <input type="text" id="pricerange"/>
+
+                                                    <Slider
+                                                    min={0}
+                                                    max={1000}
+        value={filterprix}
+        orientation="horizontal"
+        onChange={(value)=>handleFilter(value)}
+      />
+                                                 
+                                                 
                                                 </div>
 
                                                 <div class="mt-4 pt-3">
