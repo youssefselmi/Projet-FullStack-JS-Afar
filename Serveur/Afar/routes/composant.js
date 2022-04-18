@@ -1,65 +1,105 @@
 var express = require('express');
 var router = express.Router();
 var Composant = require('../models/composant');
+var Besoin = require('../models/besoin');
 const app = express();
-app.use(express);
-
-
-
 let cors = require("cors");
 router.use(cors());
+require('dotenv').config();
+const nodemailer = require('nodemailer');
+const log = console.log;
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+      user: process.env.EMAIL , // TODO: your gmail account
+      pass: process.env.PASSWORD // TODO: your gmail password
+    }
+});
 
 
 
-router.post('/add', async(req, res, next) => {
-  /*  new Composant({
-            Name: req.body.Name,
-            Etat: req.body.Etat,
-            Marque: req.body.Marque,
-            Description: req.body.Description,
-            Image: req.body.Image,
-            Prix: req.body.Prix,
-            Livraison: req.body.Livraison,
-            DateFabrication: req.body.DateFabrication,
+router.post('/add', async(req, res, next) => { 
+/*const client = require('twilio')(
+    process.env.TWILIO_ACCOUNT_SID,
+    process.env.TWILIO_AUTH_TOKEN
+  );*/
 
-
-
-        })
-        .save(
-            (err, newcomposant) => {
-                if (err)
-                    console.log("error message :" + err);
-                else {
-                    console.log(newcomposant);
-                    res.send("Composant Added Succesfully");
-
-                }
-            }
-        );
-})*/
-
-
-// console.log(req.body);
-const {Name,Etat,Marque,Description,Image,Prix,Livraison} = req.body;
+try {  
+    const {Name,Etat,Marque,Description,Image,Prix,Livraison} = req.body;
 
 if(!Name || !Etat || !Marque || !Description || !Image || !Prix || !Livraison){
-    res.status(422).json("plz fill the data");
+   return res.status(422).json("plz fill the data");
 }
-
-try {
-    
         const adduser = new Composant({
-            Name,Etat,Marque,Description,Image,Prix,Livraison});
-
-        await adduser.save();
-        res.status(201).json(adduser);
-        console.log(adduser);
-    
+         Name,Etat,Marque,Description,Image,Prix,Livraison});
+      const resultat=  await adduser.save();
+     
         
+ /*     client.messages
+      .create({
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: "+21653862672",
+        body: "Votre Broken Piece a ete ajoutee avec sucess dans Afar.tn . Merci pour votre Annonce "
+      })
+      .then(() => {
+    console.log("oui")
+      })
+      .catch(err => {
+        console.log(err); 
+      });*/
 
+        const listBession = await Besoin.find({ Besoinrecherche:Name });
+        listBession.map((B) => {
+
+
+            let html = `
+            <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta http-equiv="x-ua-compatible" content="ie=edge">
+          <title>Alert Email</title>
+        </head>
+        <body>
+        <a href="http://localhost:3001/viewcomposant/${resultat._id}">Website</a>
+        </body>
+        </html>
+            
+            
+            
+            `
+            const mailOptions = {
+                from: 'youssefselmi99@gmail.com', // TODO: email sender
+                to: B.Email, // TODO: email receiver
+                subject: 'Alert',
+                html
+              };
+                    transporter.sendMail(mailOptions, (err, data) => {
+                      if (err) {
+                          return log('Error occurs');
+                      }
+                      return    res.status(201).json(adduser);
+                  });
+                
+            
+          })
+        
+            res.status(201).json(adduser);
+       
+
+
+      
+      
 } catch (error) {
-    res.status(422).json(error);
+       res.json(error);
 }
+
+
+
+////////////////////////// Recherche Besoin ///////////////////////////
+
+
+
 })
 
 

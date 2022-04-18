@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-require('./piece');
 
 var Schema = mongoose.Schema;
 var Composant = new Schema({

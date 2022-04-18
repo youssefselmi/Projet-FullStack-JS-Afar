@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors");
+const dotenv = require("dotenv")
+
 
 
 var indexRouter = require('./routes/index');
@@ -12,18 +14,21 @@ var contactRouter = require('./routes/contact');
 var composantRouter = require('./routes/composant');
 var pieceRouter = require('./routes/piece');
 var itemRouter = require('./routes/items');
+var paymentRouter = require('./routes/payment');
+var besoinRouter = require('./routes/besoin');
+
+
+
+var livreurRouter = require('./routes/livreur');
+var serviceRouter = require('./routes/services');
 
 
 var app = express();
+dotenv.config();
 
-
-
-
-// view engine setup
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade', 'twig');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,6 +41,15 @@ app.use('/contact', contactRouter);
 app.use('/composant', composantRouter);
 app.use('/piece', pieceRouter);
 app.use('/items',itemRouter);
+app.use('/livreur', livreurRouter);
+app.use('/service', serviceRouter);
+app.use('/api/payment',paymentRouter);
+app.use('/besoin',besoinRouter);
+
+
+
+
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "uploads")));
 app.use(cors());
