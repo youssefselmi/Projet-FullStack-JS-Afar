@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios'
 import { useHistory ,useNavigate} from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
+import { handle } from "express/lib/application";
 
 
 function onChange(value){
@@ -30,7 +31,7 @@ export default function AddLivreur (props){
     setlivreur({ ...livreur, [e.target.name]: e.target.value });
     
   };
-  console.log(livreur);
+  console.log(livreur.disponibilite);
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -148,20 +149,24 @@ export default function AddLivreur (props){
                           <option value="2013">2013</option>
                         </select>
                       </div>   
-                      
                      
                       
                       <div className="mb-3">
                      <label htmlFor="disponibilite">disponibilite</label>
-                   
-                          <select name="disponibilite" value={disponibilite} onChange={(e) => onInputChange(e)} required  >
-                          <option value>Please choose Model</option>
-                          <option value="all day">all day</option>
-                          <option value="afternoon">afternoon</option>
-                          <option value="the morning">the morning</option>
-                          <option value="weekend">weekend</option>
-                        </select>                     
                      </div>  
+                     <div>
+                     all days  <input type="checkbox" onChange={(e) => onInputChange(e)}  name="disponibilite" value=" all days"/>
+                     </div>  
+                     <div>
+                     afternoon  <input type="checkbox" onChange={(e) => onInputChange(e)}  name="disponibilite" value="afternoon"/>
+                    </div>                     
+                     <div>
+                     the morning  <input type="checkbox" onChange={(e) => onInputChange(e)}  name="disponibilite" value="the morning "/>
+                     </div>
+                     <div>
+                       weekend  <input type="checkbox" onChange={(e) => onInputChange(e)}  name="disponibilite" value="weekend "/>                 
+                     </div>
+  
                       <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email</label>
                         <input type="email" className="form-control" value={email} onChange={(e) => onInputChange(e)}  name="email" placeholder="Enter email" required />  
