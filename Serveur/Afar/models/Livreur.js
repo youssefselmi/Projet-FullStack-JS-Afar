@@ -16,7 +16,8 @@ var Livreur = new Schema ({
     email: String,  
     age:Number,
     disponibilite:String, 
-   password : String
+   password : String,
+   signaler:Number
 
 }); 
 

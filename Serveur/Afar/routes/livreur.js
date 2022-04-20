@@ -82,6 +82,21 @@ router.post('/add', upload.single("photo"),function(req, res, next) {
                }
              );
             })
-            
+            router.patch("/updatelivreur/:id", async(req, res) => {
+              try {
+                  const { id } = req.params;
+          
+                  const updatelivreur = await Livreur.findByIdAndUpdate(id, req.body, {
+                      new: true
+                  });
+          
+                  console.log(updatelivreur);
+                  res.status(201).json(updatelivreur);
+          
+              } catch (error) {
+                  res.status(422).json(error);
+              }
+          })
+
 
 module.exports = router;
