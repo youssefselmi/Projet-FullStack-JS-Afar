@@ -3,28 +3,20 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-<<<<<<< Updated upstream
-
-
-  export default function Listservice(props) {
-
-=======
 import {toast} from "react-toastify";
 import { Checkbox, Collapse } from 'antd';
 
 
 
   export default function Listservice(props) {
-   
+    
+  
      
->>>>>>> Stashed changes
   var [services, setUser] = useState([]);
 
   useEffect(() => {
     loadUsers();
   }, []);
-<<<<<<< Updated upstream
-=======
   const onDeleteService = async (id) => {
 
     if(window.confirm("Are you sure to delete this service"))
@@ -41,7 +33,6 @@ import { Checkbox, Collapse } from 'antd';
 
 
 }
->>>>>>> Stashed changes
   
 
   var loadUsers = async () => {
@@ -54,7 +45,7 @@ import { Checkbox, Collapse } from 'antd';
         <div>
           {/* Mirrored from themesbrand.com/skote-django/layouts/ecommerce-add-product.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 15 Feb 2022 20:58:08 GMT */}
           <meta charSet="utf-8" />
-          <title>Services </title>
+          <title>my services </title>
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
           <meta content="Themesbrand" name="author" />
@@ -398,13 +389,9 @@ import { Checkbox, Collapse } from 'antd';
                       </div>
                     </div>
                   </div>
-<<<<<<< Updated upstream
                   <Link to={`/ajoutservice`}>
                    <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">+Add service</button>
                     </Link>
-=======
-                  
->>>>>>> Stashed changes
                   <div className="dropdown d-inline-block">
                     <button type="button" className="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <img className="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" />
@@ -440,11 +427,8 @@ import { Checkbox, Collapse } from 'antd';
                   <div className="row">
                     <div className="col-12">
                       <div className="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 className="mb-sm-0 font-size-18">Services</h4>
-<<<<<<< Updated upstream
-=======
+                        <h4 className="mb-sm-0 font-size-18">Services added by me</h4>
                        
->>>>>>> Stashed changes
                         <div className="page-title-right">
                           <ol className="breadcrumb m-0">
                             <li className="breadcrumb-item"><a href="javascript: void(0);">Afar by Skolls</a></li>
@@ -458,14 +442,7 @@ import { Checkbox, Collapse } from 'antd';
                     <div className="col-12">
                       <div className="card">
                         <div className="card-body">
-<<<<<<< Updated upstream
                           <h4 className="card-title">Service</h4>
-=======
-                         
-                          <Link to={`/ajoutservice`}>
-                   <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">+Add new service</button>
-                    </Link>
->>>>>>> Stashed changes
                         </div>
                       </div>
                       <div className="row">
@@ -486,20 +463,10 @@ import { Checkbox, Collapse } from 'antd';
         
                                 <div className="flex-grow-1 overflow-hidden">
                               
-<<<<<<< Updated upstream
-                                <div className="add_btn">
-              <Link to={`/updateservice/${livreur._id}`}>  <button className="btn btn-link btn-sm mx-2"><CreateIcon /></button></Link>
-              <button className="btn btn-li,k btn-sm mx-2" ><DeleteOutlineIcon /></button>
-              </div>
-                                  <p className="text-muted mb-4">{livreur.title}</p>
-                                  <p className="text-muted mb-4">22 474 153</p>
-=======
-                                
                                   <p className="text-muted mb-4">{livreur.title}</p>
                                   
                                   <p className="text-muted mb-4">22 474 153</p>
                                   <p className="text-muted mb-4">{livreur.addedat}</p>
->>>>>>> Stashed changes
                                   <div className="avatar-group">
                                    
                                   
@@ -512,34 +479,14 @@ import { Checkbox, Collapse } from 'antd';
                                 <div className="px-4 py-3 border-top">
                                   <p className="text-muted mb-4">{livreur.type}</p>
                                   <p className="text-muted mb-4">{livreur.description}</p>
-                                  <div className="rating-star">
-                                    <span style={{cursor: 'default'}}><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'hidden'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: 'auto'}}><span className="mdi mdi-star text-primary" /></div></div><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'hidden'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: 'auto'}}><span className="mdi mdi-star text-primary" /></div></div><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'hidden'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: 'auto'}}><span className="mdi mdi-star text-primary" /></div></div><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'visible'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: '0%'}}><span /></div></div><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'visible'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: '0px'}}><span /></div></div></span><input type="hidden" className="rating" data-filled="mdi mdi-star text-primary" data-empty="mdi mdi-star-outline text-muted" data-readonly defaultValue={3} /><span className="badge bg-info">3</span>
-                                  </div>
-                                </div>
-                                <div className="px-4 py-3 border-top">
-                                  <ul className="list-inline mb-0">
-<<<<<<< Updated upstream
-=======
+
                                   
->>>>>>> Stashed changes
-                                    
-                                    <li className="list-inline-item me-3">
-                                    <Link to={`/mail`}>
-                                      <button type="button" className="btn btn-danger btn-rounded waves-effect waves-light">Report</button>
-                                      </Link>
-                                    </li>
-                                    <li className="list-inline-item me-3">
-                                    <Link to={`/DetailServices/${livreur._id}`}>
-                                      <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">+info</button>
-                                      </Link>
-                                      
-<<<<<<< Updated upstream
-=======
-                                      
->>>>>>> Stashed changes
-                                    </li>
-                                   
-                                  </ul>
+                                <div className="add_btn">
+              <Link to={`/updateservice/${livreur._id}`}>  <button className="btn btn-link btn-sm mx-2"><CreateIcon /></button></Link>
+              <button className="btn btn-link btn-sm mx-2" onClick={() => onDeleteService(livreur._id)}><DeleteOutlineIcon /></button>
+              </div>
+                                  
+                                
                                 </div>
                               </div>
                             </div>
@@ -608,7 +555,4 @@ import { Checkbox, Collapse } from 'antd';
 
     }
 
-<<<<<<< Updated upstream
-=======
   
->>>>>>> Stashed changes

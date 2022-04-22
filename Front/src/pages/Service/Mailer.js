@@ -14,6 +14,10 @@ const Mailer = () => {
         alert("Mail Send")
       
         history("/listService")
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
     }
     return(
         <div className="container border"

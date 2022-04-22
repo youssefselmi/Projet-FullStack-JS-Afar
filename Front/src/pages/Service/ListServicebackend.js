@@ -13,6 +13,10 @@ import { updatedata } from "../context/ContextProvider";
 
 
 const ListServicebackend = () => {
+<<<<<<< Updated upstream
+=======
+   
+>>>>>>> Stashed changes
 
     const [data, setData] = useState([]);
 
@@ -369,6 +373,10 @@ const ListServicebackend = () => {
                                                         <th>city</th>
                                                         <th>zipcode</th>
                                                         <th>disponibility</th>
+<<<<<<< Updated upstream
+=======
+                                                        <th>signal</th>
+>>>>>>> Stashed changes
                                                         <th>Actions</th>
 
 
@@ -389,8 +397,17 @@ const ListServicebackend = () => {
                                                                 <td>{service.governorate}</td>
                                                                 <td>{service.city}</td>
                                                                 <td>{service.zipcode}</td>
+<<<<<<< Updated upstream
                                                                 <td>{service.disponibility}</td>
                                                                 
+=======
+                                                                <td>
+                                                                    <tr>{service.disponibility}</tr>
+                                                                    <tr>{service.weekend}</tr>
+                                                                    <tr>{service.day}</tr>
+                                                                    <tr>{service.night}</tr></td>
+                                                                <td>{service.signal}</td>
+>>>>>>> Stashed changes
 
 
 
@@ -399,6 +416,7 @@ const ListServicebackend = () => {
 
                                                                    
 
+<<<<<<< Updated upstream
                                                                     <Link to={`/viewservice/${service._id}`}>
                                                                         <button className="btn btn-dark" >View</button>
                                                                     </Link> 
@@ -408,6 +426,12 @@ const ListServicebackend = () => {
                                                                     <button class="btn btn-danger" onClick={() => onDeleteService(service._id)}> Delete</button>
                                                                     
                                                                 </td>
+=======
+                                                                <button class="btn btn-danger" onClick={() => onDeleteService(service._id)}> Delete</button>   
+                                                                    
+                                                                    </td>
+                                                                    
+>>>>>>> Stashed changes
 
                                                             </tr>
 
