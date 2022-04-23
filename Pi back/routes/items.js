@@ -62,7 +62,7 @@ const storage = multer.diskStorage({
    const paz = req.body.price
    const pad =  req.body.descreption
     //console.log(req.file.path)
-    //const { itemName, price , categorie} = req.body
+    //  onst { itemName, price , categorie} = req.body
    
       const item = new Item({
           
@@ -100,6 +100,19 @@ const storage = multer.diskStorage({
         const a1 = await item.remove()
         res.send('Element supprime')
         
+
+    }catch(err){
+        res.send('Error'+ err)
+    }
+})
+router.put('/modifier/:id/favoris',async(req,res)=>{
+    try{
+        const item = await Item.findById(req.params.id)
+     //   item.itemName = req.body.itemName 
+        item.favoris = true
+        
+        const a1 = await item.save()
+        res.json(a1)
 
     }catch(err){
         res.send('Error'+ err)
