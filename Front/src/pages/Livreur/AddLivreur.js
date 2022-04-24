@@ -41,8 +41,12 @@ export default function AddLivreur (props){
   console.log(livreur.disponibilite);
 
   const onSubmit = async e => {
-    e.preventDefault();
   
+      e.preventDefault();
+     
+      
+      
+        
     
     const res = await fetch("http://localhost:3000/livreur/add", {
       method: "POST",
@@ -53,16 +57,7 @@ export default function AddLivreur (props){
         nom, prenom, num,disponibilite,age, addr,password,region,modele,type ,email,picture:pathimage
       })
   });
-  const send = async e => {
-    e.preventDefault();
-    emailjs.sendForm('service_be1r64a','template_qmqra6p',e.target,'0_irkXwdW7to86_dI')
-    .then(res=>{
-      console.log(res);
-    }).catch(err=>console.log(err));
-    alert("Mail Send")
-    
-    
-      }
+
   const data = await res.json();
   console.log(data);
 
@@ -73,7 +68,13 @@ export default function AddLivreur (props){
       toast.warning("delevry is not added");
 
   } else {
-      send();
+    
+    emailjs.sendForm('service_3j9iz1g','template_qmqra6p',e.target,'0_irkXwdW7to86_dI')
+    .then(res=>{
+      console.log(res);
+    }).catch(err=>console.log(err));
+    alert("Mail Send")
+    
       history("/list")
       toast.success(" delevry is Added");
   }
