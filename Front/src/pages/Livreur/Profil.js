@@ -2,26 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {BrowserRouter, Route, Link, useNavigate,NavLink,useParams} from "react-router-dom";
 
+import {toast} from "react-toastify";
 
 export default function Profil  (){
  
 
+
   const [getuserdata, setUserdata] = useState([]);
-
-  const [updated, setUpdated] = useState(0);
-  const addLike = () => {
-    setUserdata({
-    ...getuserdata,
-    signaler: Number(getuserdata.signaler) + 1,
-  });
-  setUpdated((u) => u + 1);
-};
-
-useEffect(() => {
-  console.log(updated);
-}, [updated]);
-
-  
+  console.log(getuserdata);
 
   const { id } = useParams("");
   console.log(id);
@@ -37,24 +25,6 @@ useEffect(() => {
               "Content-Type": "application/json"
           }
       });
-    
-      const onDeleteComposant = async (id) => {
-      
-        
-              const response = await axios.delete(`http://localhost:3000/livreur/supprimer/${id}`);
-            if (response.status === 200)
-            {
-              
-                loadUsers();
-            }
-          
-
-    }
-    var loadUsers = async () => {
-      var result = await axios.get("http://localhost:3000/livreur/list");
-      setUserdata(result.data.reverse());
-      console.log(result);
-    };
 
       const data = await res.json();
       console.log(data);
@@ -71,6 +41,25 @@ useEffect(() => {
   useEffect(() => {
       getdata();
   }, [])
+  const addSignal = async (id) => {
+    if(window.confirm("Are you sure to signal this service"))
+      {
+   
+        const res = await fetch('http://localhost:3000/livreur/signal/${id}', {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          } });
+          const data = await res.json();
+    if (res.status === 200)
+          {
+            setUserdata(data)
+              toast.success(res.data);
+             
+          }
+        }
+   
+  };
 
          
 
@@ -270,10 +259,9 @@ useEffect(() => {
                     <div className="page-title-box d-sm-flex align-items-center justify-content-between">
                       <h4 className="mb-sm-0 font-size-18">Profile</h4>
 
-                      <button  type="submit" className="btn btn-primary waves-effect waves-light" onClick={addLike}>
+                      <button  type="submit" className="btn btn-primary waves-effect waves-light" onClick={addSignal}>
                       signaler
                    </button>    
-                   <label htmlFor="age" className="form-label">signaler : {updated}</label>
 
                       <div className="page-title-right">
                         <ol className="breadcrumb m-0">
@@ -360,7 +348,7 @@ useEffect(() => {
                               </tr>
                              
                               <tr>
-                                <th scope="row">Disponibilite veicule:</th>
+                                <th scope="row">Disponibilite :</th>
                                 <td>{getuserdata.disponibilite}</td>
                               </tr>
                             </tbody>

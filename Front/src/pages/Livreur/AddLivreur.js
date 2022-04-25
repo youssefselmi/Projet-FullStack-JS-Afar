@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useState ,useRef} from "react";
 import axios from 'axios'
 import { useHistory ,useNavigate} from "react-router-dom";
-import ReCAPTCHA from "react-google-recaptcha";
+
 import { handle } from "express/lib/application";
 import emailjs from "emailjs-com";
 import {toast} from "react-toastify";
 import { EmailJSResponseStatus } from "emailjs-com";
-function onChange(value){
-    
-}
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 export default function AddLivreur (props){
  
@@ -39,6 +38,10 @@ export default function AddLivreur (props){
     
   };
   console.log(livreur.disponibilite);
+  const [token, setToken] = useState("");
+  const [error, setError] = useState("");
+  const reCaptcha = useRef();
+
 
   const onSubmit = async e => {
   
@@ -69,7 +72,7 @@ export default function AddLivreur (props){
 
   } else {
     
-    emailjs.sendForm('service_3j9iz1g','template_qmqra6p',e.target,'0_irkXwdW7to86_dI')
+    emailjs.sendForm('service_o7z495r','template_ai3igoa',e.target,'KI5QKJoaI4zyYA6U-')
     .then(res=>{
       console.log(res);
     }).catch(err=>console.log(err));
@@ -234,14 +237,23 @@ export default function AddLivreur (props){
                         </div>       
                       </div>
                       <div className="col-6">
-                            <ReCAPTCHA 
-                             sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                             onChange={onChange}
-                              />,
-                              </div>
+                            <ReCAPTCHA
+                        style={{
+                          marginTop: "20px",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                        ref={reCaptcha}
+                        sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                        onChange={(token) => setToken(token)}
+                        onExpired={(e) => setToken("")}
+                      />,
+                             
+                           
+                            </div>
                       
                       <div className="mt-4 d-grid">
-                        <button className="btn btn-primary waves-effect waves-light" type="submit">Register</button>
+                        <button className="btn btn-primary waves-effect waves-light" disabled={!token} type="submit">Register</button>
                       </div>
                       <div className="mt-4 text-center">
                         <h5 className="font-size-14 mb-3">Sign up using</h5>

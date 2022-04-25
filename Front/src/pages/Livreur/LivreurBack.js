@@ -29,11 +29,6 @@ const AdminLivreur = () => {
 
     console.log("data =>", data);
 
-
-
-
-
-
     const onDeleteComposant = async (id) => {
 
         if(window.confirm("Are you sure to delete this Livreur"))
