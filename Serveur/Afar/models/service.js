@@ -1,9 +1,5 @@
 const mongoose = require('mongoose'); 
 
-<<<<<<< Updated upstream
-var Schema = mongoose.Schema ; 
-var serviceSchema = new mongoose.Schema({
-=======
 
 
 let ts = Date.now();
@@ -20,17 +16,11 @@ let added=(date+ "-" + month + "-" + year + "         "+  + hours + ":" + minute
 var Schema = mongoose.Schema ; 
 var serviceSchema = new mongoose.Schema({
     
->>>>>>> Stashed changes
     type:String,
     title:String,
     maxPart : Number,
     description : String,
     governorate :String,
-<<<<<<< Updated upstream
-     city: String,
-     zipcode : Number,
-     disponibility : String
-=======
     city: String,
     zipcode : Number,
     disponibility : String,
@@ -41,7 +31,6 @@ var serviceSchema = new mongoose.Schema({
         
         type: 'String', default: added, required: true },
     signal:{type:'Number',default:0},
->>>>>>> Stashed changes
      
        
 }); 

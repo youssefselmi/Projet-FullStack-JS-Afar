@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-import React, { useState } from "react";
-=======
 import React, { useState,setState,useRef} from "react";
->>>>>>> Stashed changes
 import axios from 'axios'
 import { Link,useHistory, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -13,13 +9,9 @@ function onChange(value){
 }
 
 export default function AjoutService (props){
-<<<<<<< Updated upstream
-  const history = useNavigate();
-=======
   const [x,setx]=useState(null);
   const history = useNavigate();
   
->>>>>>> Stashed changes
   var [service, setservice] = useState({
     type: "",
     title: "",
@@ -29,17 +21,6 @@ export default function AjoutService (props){
     zipcode:"",
     description:"",
     disponibility:"",
-<<<<<<< Updated upstream
-    
-  });
-
-  var { type,title,maxPart,governorate,city,zipcode,description,disponibility} = service;
-  var onInputChange = e => {
-    setservice({ ...service, [e.target.name]: e.target.value });
-    
-  };
-  console.log(service);
-=======
     weekend:"",
     day:"",
     night:"",
@@ -56,7 +37,6 @@ export default function AjoutService (props){
   const [token, setToken] = useState("");
   const [error, setError] = useState("");
   const reCaptcha = useRef();
->>>>>>> Stashed changes
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -735,8 +715,6 @@ export default function AjoutService (props){
                                       <option value="private lesson">private lesson</option>
                                     </select>
                                   </div>
-<<<<<<< Updated upstream
-=======
                                   <div className="mb-12">
                                     { service.type==("carpooling") &&(
                                       
@@ -752,7 +730,6 @@ export default function AjoutService (props){
                                   
                                     
                                   </div>
->>>>>>> Stashed changes
                                   <div className="mb-3">
                                   <h6 className="col-1" style={{marginTop:"10px"}}>Title  :</h6>
                                     <input
@@ -764,21 +741,7 @@ export default function AjoutService (props){
                                       value={title} onChange={e => onInputChange(e)}
                                     />
                                   </div>
-<<<<<<< Updated upstream
-                                  <div className="mb-12">
                                   
-                                    <input
-                                      
-                                      name="maxPart"
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="maximum number of participants"
-                                      value={maxPart} onChange={e => onInputChange(e)}
-                                    />
-                                  </div>
-=======
-                                  
->>>>>>> Stashed changes
                                 </div>
                                 <div className="row">
                                   <div className="col-lg-4">
@@ -847,15 +810,6 @@ export default function AjoutService (props){
                                   />
                                   <div className="mb-6">
                                 <h6 className="col-2">Disponibility  :</h6>
-<<<<<<< Updated upstream
-                                  <textarea
-                                    className="form-control"
-                                    name="disponibility"
-                                    rows={5}
-                                    placeholder="disponiblity"
-                                    value={disponibility} onChange={e => onInputChange(e)}
-                                  />
-=======
                                 <div className="form-check form-check-inline">
     <input className="form-check-input" name="disponibility" onChange={(e)=>onInputChange(e)}type="checkbox" id="inlineCheckbox1" value="Everyday"/>
     <label className="form-check-label" htmlFor="inlineCheckbox1">everyday</label>
@@ -873,18 +827,11 @@ export default function AjoutService (props){
     <label className="form-check-label" htmlFor="inlineCheckbox1">night</label>
   </div>
 
->>>>>>> Stashed changes
                                   </div>
                                 </div>
                               </div>
                             </div>
                             <div className="col-6">
-<<<<<<< Updated upstream
-                            <ReCAPTCHA 
-                             sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                             onChange={onChange}
-                              />,
-=======
                             <ReCAPTCHA
                         style={{
                           marginTop: "20px",
@@ -896,7 +843,6 @@ export default function AjoutService (props){
                         onChange={(token) => setToken(token)}
                         onExpired={(e) => setToken("")}
                       />,
->>>>>>> Stashed changes
                              
                            
                             </div>
@@ -910,11 +856,7 @@ export default function AjoutService (props){
                             Cancel
                           </button>
                           </Link>
-<<<<<<< Updated upstream
-                              <button  type="submit" className="btn btn-success">
-=======
                               <button disabled={!token}  type="submit" className="btn btn-success">
->>>>>>> Stashed changes
                                 add service
                               </button>
                               

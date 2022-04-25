@@ -14,22 +14,18 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 
 const DetailServices = () => {
-<<<<<<< Updated upstream
-
-
-=======
     
 
 
 
     
 
->>>>>>> Stashed changes
     const [getuserdata, setUserdata] = useState([]);
     console.log(getuserdata);
 
     const { id } = useParams("");
     console.log(id);
+    
 
     const history = useNavigate();
 
@@ -42,10 +38,7 @@ const DetailServices = () => {
                 "Content-Type": "application/json"
             }
         });
-<<<<<<< Updated upstream
-=======
        
->>>>>>> Stashed changes
 
         const data = await res.json();
         console.log(data);
@@ -377,20 +370,13 @@ const DetailServices = () => {
                                                                 <img src="assets/images/users/avatar-5.jpg"  alt="" className="rounded-circle avatar-md height=30" />
                                                                     <h3 className="mt-3">Type: <span >{getuserdata.type}</span></h3>
                                                                     <p className="mt-3">Max Number of Participants: <span>{getuserdata.maxPart}</span></p>
-<<<<<<< Updated upstream
-                                                                    <p className="mt-3">Disponibility: <span>{getuserdata.disponibility}</span></p>
-=======
                                                                     <p className="mt-3">Disponibility: <span>{getuserdata.disponibility},{getuserdata.weekend},{getuserdata.day},{getuserdata.night}</span></p>
->>>>>>> Stashed changes
                                                                     <p className="mt-3"><WorkIcon />Description: <span>{getuserdata.description}</span></p>
                                                                     <ul className="list-inline mb-0">
                                     
                                     
                                     <li className="list-inline-item me-3">
-<<<<<<< Updated upstream
-=======
                                    
->>>>>>> Stashed changes
                                     <Link to={`/listService`}>
                                       <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">Back</button>
                                       </Link>
@@ -410,18 +396,11 @@ const DetailServices = () => {
                                                                 
                                                                 <div className="right_view  col-lg-6 col-md-6 col-12">
 
-<<<<<<< Updated upstream
-                                                                    <p className="mt-5">Governorate: <span>{getuserdata.governorate}</span></p>
-                                                                    <p className="mt-3">City: <span>{getuserdata.city}</span></p>
-                                                                     <p className="mt-3">Zip Code: <span>{getuserdata.zipcode}</span></p>
-                                                                     <p className="mt-3">User Name: <span>Houssem Chebbi</span></p>
-=======
                                                                     <p className="mt-5">Governorate : <span>{getuserdata.governorate}</span></p>
                                                                     <p className="mt-3">City : <span>{getuserdata.city}</span></p>
                                                                      <p className="mt-3">Zip Code : <span>{getuserdata.zipcode}</span></p>
                                                                      <p className="mt-3">User Name : <span>Houssem Chebbi</span></p>
                                                                      <p className="mt-3">Added At : <span>{getuserdata.addedat}</span></p>
->>>>>>> Stashed changes
                                                                      <p className="mt-3"><PhoneAndroidIcon />Phone Number: <span>21136520</span></p>
                                                                      
                                                                 </div>

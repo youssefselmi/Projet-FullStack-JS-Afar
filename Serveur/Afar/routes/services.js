@@ -7,12 +7,10 @@ app.use(express);
 
 
 let cors = require("cors");
+const service = require('../models/service');
 router.use(cors());
 
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 router.get('/list',async(req,res)=>{
     try{
         const services = await Service.find()
@@ -42,10 +40,7 @@ router.get('/list',async(req,res)=>{
     })
   
     }) });
-<<<<<<< Updated upstream
-=======
    
->>>>>>> Stashed changes
     
 router.post('/add', function(req, res, next) {
     new Service({
@@ -58,8 +53,6 @@ router.post('/add', function(req, res, next) {
         city:req.body.city,
         zipcode: req.body.zipcode,    
         disponibility: req.body.disponibility,
-<<<<<<< Updated upstream
-=======
         weekend: req.body.weekend,
         day: req.body.day,
         night: req.body.night,
@@ -67,7 +60,6 @@ router.post('/add', function(req, res, next) {
         signal:req.body.signal,
 
 
->>>>>>> Stashed changes
    
 
              })
@@ -99,10 +91,13 @@ router.post('/add', function(req, res, next) {
                   res.status(422).json(error);
               }
           })
-<<<<<<< Updated upstream
-=======
-          
->>>>>>> Stashed changes
+          router.post("/signal/:id", (req, res, next) => {
+            Service.findOneAndUpdate({ _id: req.params.id }, { $inc: { signal: 1 } }).exec();
+            Service.findOneAndDelete(
+                { _id : req.params.id,signal: { $gte: 3}} 
+             )
+            res.json("done");
+          });
 
 
 module.exports = router;

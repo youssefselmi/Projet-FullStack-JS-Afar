@@ -14,11 +14,8 @@ const UpdateService = () => {
     const {updata, setUPdata} = useContext(updatedata)
 
     const history = useNavigate("");
-<<<<<<< Updated upstream
-=======
     
     
->>>>>>> Stashed changes
 
     const [inpval, setINP] = useState({
         type: "",
@@ -28,13 +25,10 @@ const UpdateService = () => {
         governorate:"",
         city:"",
         zipcode:"",
-<<<<<<< Updated upstream
-=======
         disponibility:"",
         weekend:"",
         day:"",
         night:"",
->>>>>>> Stashed changes
    
     })
 
@@ -87,11 +81,7 @@ const UpdateService = () => {
 
 
 
-<<<<<<< Updated upstream
-        const {type,title,maxPart,description,governorate,city,zipcode} = inpval;
-=======
         const {type,title,maxPart,description,governorate,city,zipcode,disponibility} = inpval;
->>>>>>> Stashed changes
 
         const res2 = await fetch(`http://localhost:3000/service/updateservice/${id}`,{
             method: "PATCH",
@@ -99,11 +89,7 @@ const UpdateService = () => {
                 "Content-Type": "application/json"
             },
             body:JSON.stringify({
-<<<<<<< Updated upstream
-                type,title,maxPart,description,governorate,city,zipcode
-=======
                 type,title,maxPart,description,governorate,city,zipcode,disponibility
->>>>>>> Stashed changes
             })
         });
 
@@ -883,16 +869,6 @@ const UpdateService = () => {
                             </div>
                             <div className="mb-6">
                                 <h6 className="col-2">Disponibility  :</h6>
-<<<<<<< Updated upstream
-                                  <textarea
-                                    className="form-control"
-                                    name="disponibility"
-                                    rows={5}
-                                    placeholder="disponiblity"
-                                    value={inpval.disponibility} onChange={setdata}
-                                  />
-                          </div>
-=======
                                 <div className="form-check form-check-inline">
     <input className="form-check-input" name="disponibility" onChange={setdata}type="checkbox" id="inlineCheckbox1" value="Everyday"/>
     <label className="form-check-label" htmlFor="inlineCheckbox1">everyday</label>
@@ -909,7 +885,6 @@ const UpdateService = () => {
     <input className="form-check-input" name="night" onChange={setdata}type="checkbox" id="inlineCheckbox2" value="Night"/>
     <label className="form-check-label" htmlFor="inlineCheckbox1">night</label>
   </div></div>
->>>>>>> Stashed changes
 
 
 
