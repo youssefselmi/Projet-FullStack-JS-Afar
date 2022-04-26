@@ -8,20 +8,20 @@ import { updatedata } from './context/ContextProvider'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import autoTable from 'jspdf-autotable'
-import { CollectionsOutlined } from "@mui/icons-material";
+
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+//Datatable Modules
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import $ from 'jquery'; 
 
 
 
 const Listecomposantsbackend = () => {
 
 
-
-
-
-
-
     const [data, setData] = useState([]);
-
     useEffect(()=>{
             getComposants();
         },[]
@@ -56,9 +56,10 @@ const Listecomposantsbackend = () => {
     }
 
     /////////// Update ////////////////
-    const {updata, setUPdata} = useContext(updatedata);
+    const {updata, setUPdata} = React.useContext(updatedata);
 
     ///////////// pdf /////////////////
+
 
 const handlePDF= () => {
     const doc = new jsPDF();
@@ -72,10 +73,8 @@ data.map(i=>{
         i.Marque,
       ];
       rows.push(temp);
-
 })
-    doc.autoTable({
-        	
+    doc.autoTable({    	
         head: [['Name', 'Etat', 'Prix', 'Marque']],
         body:  rows
         ,
@@ -85,26 +84,19 @@ data.map(i=>{
 
  
 
-
-  //  
-
-//    
+ 
 
 
 
-  /*  const doc = new jsPDF()
-    autoTable(doc, { html: '#my-table' })
-   doc.save('table.pdf')*/
-
-
-
-
+$(document).ready(function () {
+    setTimeout(function(){
+    $('#example').DataTable();
+     } ,1000);
+});
 
     return(
+        
         <div>
-
-
-
 
             {
                 updata ?
@@ -407,6 +399,8 @@ data.map(i=>{
                                                         Add New Piece
                                                     </button>
                                                 </Link>
+
+                                                
                                                     <button  type="button" className="btn btn-danger btn-block waves-effect waves-light rog "
                                                             onClick={handlePDF}>
                                                       PDF
@@ -416,7 +410,7 @@ data.map(i=>{
                                                 <h4 className="card-title">Liste des Pieces</h4>
 
 
-                                                <table id="my-table"
+                                                <table id="example" class="table table-hover table-bordered"
                                                        className="table table-bordered dt-responsive  nowrap w-100 styled-table">
                                                     <thead>
                                                     <tr>
@@ -607,6 +601,9 @@ data.map(i=>{
             <div class="rightbar-overlay"></div>
 
 
+      
+
+
             <script src="assets/libs/jquery/jquery.min.js"></script>
             <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
             <script src="assets/libs/metismenu/metisMenu.min.js"></script>
@@ -648,40 +645,15 @@ data.map(i=>{
 
 
 
+
+
+
+
         </div>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

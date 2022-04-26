@@ -17,6 +17,23 @@ class ItemDataService {
     update(_id,data){
         return http.put(`/modifer/${_id}`,data)
     }
+    catlanimal(){
+        return http.get('/categorie?categorie=Animals')
+    }
+    catcloth(){
+        return http.get('categorie?categorie=Clothes')
+    }
+    catelect(){
+        return http.get('categorie?categorie=Electronique')
+    }
+    catcars(){
+        return http.get('categorie?categorie=Cars')
+    }
+    catjard(){
+        return http.get('categorie?categorie=Jardinage')
+    }
+    affichsugg(){
+        return http.get('/njareb');
+    }
 }
 export default new ItemDataService
-

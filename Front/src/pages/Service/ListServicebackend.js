@@ -13,6 +13,7 @@ import { updatedata } from "../context/ContextProvider";
 
 
 const ListServicebackend = () => {
+   
 
     const [data, setData] = useState([]);
 
@@ -369,6 +370,7 @@ const ListServicebackend = () => {
                                                         <th>city</th>
                                                         <th>zipcode</th>
                                                         <th>disponibility</th>
+                                                        <th>signal</th>
                                                         <th>Actions</th>
 
 
@@ -389,8 +391,12 @@ const ListServicebackend = () => {
                                                                 <td>{service.governorate}</td>
                                                                 <td>{service.city}</td>
                                                                 <td>{service.zipcode}</td>
-                                                                <td>{service.disponibility}</td>
-                                                                
+                                                                <td>
+                                                                    <tr>{service.disponibility}</tr>
+                                                                    <tr>{service.weekend}</tr>
+                                                                    <tr>{service.day}</tr>
+                                                                    <tr>{service.night}</tr></td>
+                                                                <td>{service.signal}</td>
 
 
 
@@ -399,15 +405,10 @@ const ListServicebackend = () => {
 
                                                                    
 
-                                                                    <Link to={`/viewservice/${service._id}`}>
-                                                                        <button className="btn btn-dark" >View</button>
-                                                                    </Link> 
+                                                                <button class="btn btn-danger" onClick={() => onDeleteService(service._id)}> Delete</button>   
+                                                                    
                                                                     </td>
-                                                                    <td>
                                                                     
-                                                                    <button class="btn btn-danger" onClick={() => onDeleteService(service._id)}> Delete</button>
-                                                                    
-                                                                </td>
 
                                                             </tr>
 

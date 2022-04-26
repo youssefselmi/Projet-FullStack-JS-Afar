@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,setState,useRef} from "react";
 import axios from 'axios'
 import { Link,useHistory, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -9,7 +9,9 @@ function onChange(value){
 }
 
 export default function AjoutService (props){
+  const [x,setx]=useState(null);
   const history = useNavigate();
+  
   var [service, setservice] = useState({
     type: "",
     title: "",
@@ -19,15 +21,22 @@ export default function AjoutService (props){
     zipcode:"",
     description:"",
     disponibility:"",
+    weekend:"",
+    day:"",
+    night:"",
+    
     
   });
 
-  var { type,title,maxPart,governorate,city,zipcode,description,disponibility} = service;
+  var { type,title,maxPart,governorate,city,zipcode,description,disponibility,weekend,day,night} = service;
   var onInputChange = e => {
     setservice({ ...service, [e.target.name]: e.target.value });
+    console.log (service);
     
   };
-  console.log(service);
+  const [token, setToken] = useState("");
+  const [error, setError] = useState("");
+  const reCaptcha = useRef();
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -706,6 +715,21 @@ export default function AjoutService (props){
                                       <option value="private lesson">private lesson</option>
                                     </select>
                                   </div>
+                                  <div className="mb-12">
+                                    { service.type==("carpooling") &&(
+                                      
+                                    
+                                    <input
+                                      
+                                      name="maxPart"
+                                      type="text"
+                                      className="form-control"
+                                      placeholder="number of place disponible"
+                                      value={maxPart} onChange={e => onInputChange(e)}
+                                    />)  }
+                                  
+                                    
+                                  </div>
                                   <div className="mb-3">
                                   <h6 className="col-1" style={{marginTop:"10px"}}>Title  :</h6>
                                     <input
@@ -717,17 +741,7 @@ export default function AjoutService (props){
                                       value={title} onChange={e => onInputChange(e)}
                                     />
                                   </div>
-                                  <div className="mb-12">
                                   
-                                    <input
-                                      
-                                      name="maxPart"
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="maximum number of participants"
-                                      value={maxPart} onChange={e => onInputChange(e)}
-                                    />
-                                  </div>
                                 </div>
                                 <div className="row">
                                   <div className="col-lg-4">
@@ -796,22 +810,39 @@ export default function AjoutService (props){
                                   />
                                   <div className="mb-6">
                                 <h6 className="col-2">Disponibility  :</h6>
-                                  <textarea
-                                    className="form-control"
-                                    name="disponibility"
-                                    rows={5}
-                                    placeholder="disponiblity"
-                                    value={disponibility} onChange={e => onInputChange(e)}
-                                  />
+                                <div className="form-check form-check-inline">
+    <input className="form-check-input" name="disponibility" onChange={(e)=>onInputChange(e)}type="checkbox" id="inlineCheckbox1" value="Everyday"/>
+    <label className="form-check-label" htmlFor="inlineCheckbox1">everyday</label>
+  </div>
+  <div className="form-check form-check-inline">
+    <input className="form-check-input" name="weekend" onChange={(e)=>onInputChange(e)}type="checkbox" id="inlineCheckbox2" value="Weekend only"/>
+    <label className="form-check-label" htmlFor="inlineCheckbox1">weekend only</label>
+  </div>
+  <div className="form-check form-check-inline">
+    <input className="form-check-input" name="day" onChange={(e)=>onInputChange(e)}type="checkbox" id="inlineCheckbox2" value="Day"/>
+    <label className="form-check-label" htmlFor="inlineCheckbox1">day</label>
+  </div>
+  <div className="form-check form-check-inline">
+    <input className="form-check-input" name="night" onChange={(e)=>onInputChange(e)}type="checkbox" id="inlineCheckbox2" value="Night"/>
+    <label className="form-check-label" htmlFor="inlineCheckbox1">night</label>
+  </div>
+
                                   </div>
                                 </div>
                               </div>
                             </div>
                             <div className="col-6">
-                            <ReCAPTCHA 
-                             sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                             onChange={onChange}
-                              />,
+                            <ReCAPTCHA
+                        style={{
+                          marginTop: "20px",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                        ref={reCaptcha}
+                        sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                        onChange={(token) => setToken(token)}
+                        onExpired={(e) => setToken("")}
+                      />,
                              
                            
                             </div>
@@ -825,7 +856,7 @@ export default function AjoutService (props){
                             Cancel
                           </button>
                           </Link>
-                              <button  type="submit" className="btn btn-success">
+                              <button disabled={!token}  type="submit" className="btn btn-success">
                                 add service
                               </button>
                               

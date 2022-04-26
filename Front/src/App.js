@@ -21,6 +21,7 @@ import ComposantDetailFront from "./pages/composantdetailFront";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Myproducts from './pages/myproducts';
+import Listebesoins from "./pages/listebesoins";
 
 import AddLivreur from './pages/Livreur/AddLivreur';
 import Listlivreur from './pages/Livreur/ListLivreur';
@@ -43,13 +44,25 @@ import DetailsBrokenPiece from './pages/DetailsBrokenPiece';
 import UpdateLivreur from './pages/Livreur/UpdateLivreur';
 import UpdateService from './pages/Service/UpdateService';
 import AjoutBesoin from './pages/ajoutBesoin';
+import MyService from './pages/Service/MyService';
+import Affichcars from './pages/affichcars';
+import Clothes from './pages/clothes';
+import Animals from './pages/animals';
+import Electro from './pages/electro';
+import Jardinage from './pages/jardinage';
+import DetailItem from './pages/detailItem';
+import Affichage from './pages/affichage';
+import DetailItemback from './pages/detaiItemback';
+import Acceuil from './pages/acceuil';
 
 
 function App() {
   return (
   
     <div className='App'>
-      <Menu/>
+     
+{/*  <Menu/> */}
+
       <BrowserRouter>
       <Routes>
       <Route path='/home' element={<Home/>} />
@@ -58,11 +71,19 @@ function App() {
       <Route path='/afficher' element={<Affichbroken/>} />
       <Route path='/update/:_id' element={<Updateitem/>} />
       <Route path='/myproducts' element={<Myproducts/>} />
-      <Route path ='/auth' element={<Authentication/>} />
-      <Route path ='/dashboard' element={<dashboard/>} />
-      <Route path ='/register' element={<Register/>} />
+   
+      <Route path='/clothes' element={<Clothes/>} />
+      <Route path='/animals' element={<Animals/>} />
+      <Route path='/electro' element={<Electro/>} />
+      <Route path='/jardinage' element={<Jardinage/>} />
+      <Route path='/cars' element={<Affichcars/>} />
+      <Route path='/affichage' element={<Affichage/>} />
+      <Route path='/details/:id' element={<DetailItem/>} />
+      <Route path='/detailsback/:id' element={<DetailItemback/>} />
+      
 
 
+    
 
 
           <Route path='/listecomposant' element={<Listecomposantbackend/>} />
@@ -72,7 +93,9 @@ function App() {
           <Route path='/viewcomposantfront/:id' element={<ComposantDetailFront/>} />
           <Route path='/detailpiece/:id' element={<DetailsBrokenPiece/>} />
           <Route path='/addbesoin' element={<AjoutBesoin/>} />
+          <Route path='/Listebesoins' element={<Listebesoins/>} />
 
+          <Route path='/acceuil' element={<Acceuil/>} />
 
 
 
@@ -94,6 +117,11 @@ function App() {
           <Route path='/service' element ={<ListServicebackend/>}/>
           <Route path='/updatelivreur/:id' element ={<UpdateLivreur/>}/>
           <Route path='/updateservice/:id' element ={<UpdateService/>}/>
+          <Route path='/myservice' element ={<MyService/>}/>
+
+          
+
+
 
       </Routes>
       </BrowserRouter>

@@ -26,7 +26,7 @@ const UpdateLivreur = () => {
         modele:"",
         email:"",
         type:"",
-        picture:"",
+       
    
     })
 
@@ -168,6 +168,13 @@ const UpdateLivreur = () => {
                         </div>  
                       </div>
                       <div className="mb-3">
+                        <label htmlFor="lastname" className="form-label">Age</label>
+                        <input type="text" className="form-control" name="prenom"  value={inpval.age} onChange={setdata} />
+                        <div className="invalid-feedback">
+                          Please Enter Last Age
+                        </div>  
+                      </div>
+                      <div className="mb-3">
                         <label htmlFor="phonenumber" className="form-label">Phone Number</label>
                         <input type="text" className="form-control" name="num" value={inpval.num} onChange={setdata} />
                         <div className="invalid-feedback">
@@ -221,13 +228,7 @@ const UpdateLivreur = () => {
                           Please Enter Password
                         </div>       
                       </div>
-                      <div className="mt-4 d-grid">
-                        <label htmlFor="picture" >Picture</label>
-                        <input type="file"  value={inpval.picture} onChange={setdata} />
-                        <div className="invalid-feedback">
-                          Please Chose a Picture
-                        </div>       
-                      </div>
+                    
                       
                       <div>
                           

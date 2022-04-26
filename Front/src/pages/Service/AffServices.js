@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {toast} from "react-toastify";
+import { Checkbox, Collapse } from 'antd';
 
 
 
   export default function Listservice(props) {
-
+   
+     
   var [services, setUser] = useState([]);
 
   useEffect(() => {
@@ -386,9 +388,7 @@ import {toast} from "react-toastify";
                       </div>
                     </div>
                   </div>
-                  <Link to={`/ajoutservice`}>
-                   <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">+Add service</button>
-                    </Link>
+                  
                   <div className="dropdown d-inline-block">
                     <button type="button" className="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <img className="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" />
@@ -425,6 +425,7 @@ import {toast} from "react-toastify";
                     <div className="col-12">
                       <div className="page-title-box d-sm-flex align-items-center justify-content-between">
                         <h4 className="mb-sm-0 font-size-18">Services</h4>
+                       
                         <div className="page-title-right">
                           <ol className="breadcrumb m-0">
                             <li className="breadcrumb-item"><a href="javascript: void(0);">Afar by Skolls</a></li>
@@ -438,7 +439,10 @@ import {toast} from "react-toastify";
                     <div className="col-12">
                       <div className="card">
                         <div className="card-body">
-                          <h4 className="card-title">Service</h4>
+                         
+                          <Link to={`/ajoutservice`}>
+                   <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">+Add new service</button>
+                    </Link>
                         </div>
                       </div>
                       <div className="row">
@@ -459,12 +463,11 @@ import {toast} from "react-toastify";
         
                                 <div className="flex-grow-1 overflow-hidden">
                               
-                                <div className="add_btn">
-              <Link to={`/updateservice/${livreur._id}`}>  <button className="btn btn-link btn-sm mx-2"><CreateIcon /></button></Link>
-              <button className="btn btn-li,k btn-sm mx-2" onClick={() => onDeleteService(livreur._id)}><DeleteOutlineIcon /></button>
-              </div>
+                                
                                   <p className="text-muted mb-4">{livreur.title}</p>
+                                  
                                   <p className="text-muted mb-4">22 474 153</p>
+                                  <p className="text-muted mb-4">{livreur.addedat}</p>
                                   <div className="avatar-group">
                                    
                                   
@@ -483,6 +486,7 @@ import {toast} from "react-toastify";
                                 </div>
                                 <div className="px-4 py-3 border-top">
                                   <ul className="list-inline mb-0">
+                                  
                                     
                                     <li className="list-inline-item me-3">
                                     <Link to={`/mail`}>
@@ -493,6 +497,7 @@ import {toast} from "react-toastify";
                                     <Link to={`/DetailServices/${livreur._id}`}>
                                       <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">+info</button>
                                       </Link>
+                                      
                                       
                                     </li>
                                    
@@ -565,3 +570,4 @@ import {toast} from "react-toastify";
 
     }
 
+  

@@ -1,42 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {toast} from "react-toastify";
 
 
   export default function ListLivreur(props) {
 
   var [livreurs, setUser] = useState([]);
+ 
+
 
   useEffect(() => {
     loadUsers();
   }, []);
-  const onDeleteLivreur = async (id) => {
 
-    if(window.confirm("Are you sure to delete this service"))
-    {
-
-        const response = await axios.delete(`http://localhost:3000/livreur/deletef/${id}`);
-        if (response.status === 200)
-        {
-            toast.success(response.data);
-            loadUsers();
-        }
-    }
-
-
-
-}
-  
-
+    
   var loadUsers = async () => {
     var result = await axios.get("http://localhost:3000/livreur/list");
     setUser(result.data.reverse());
     console.log(result);
   };
-  
-  
-
 
         
       return (
@@ -452,7 +434,7 @@ import {toast} from "react-toastify";
                                 <div className="flex-shrink-0 me-4">
                                   <div className="avatar-md">
                                     <span className="avatar-title rounded-circle bg-light text-danger font-size-16">
-                                      <img src="assets/images/users/avatar-5.jpg" alt="" className="rounded-circle avatar-md height=30" />
+                                      <img src={livreur.picture} alt="" className="rounded-circle avatar-md height=30" />
                                     </span>
                                   </div>
                                 </div>
@@ -475,6 +457,7 @@ import {toast} from "react-toastify";
                                 <div className="px-4 py-3 border-top">
                                   <p className="text-muted mb-4">{livreur.addr}</p>
                                   <p className="text-muted mb-4">{livreur.region}</p>
+                                  
                                   <div className="rating-star">
                                     <span style={{cursor: 'default'}}><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'hidden'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: 'auto'}}><span className="mdi mdi-star text-primary" /></div></div><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'hidden'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: 'auto'}}><span className="mdi mdi-star text-primary" /></div></div><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'hidden'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: 'auto'}}><span className="mdi mdi-star text-primary" /></div></div><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'visible'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: '0%'}}><span /></div></div><div className="rating-symbol" style={{display: 'inline-block', position: 'relative'}}><div className="rating-symbol-background mdi mdi-star-outline text-muted" style={{visibility: 'visible'}} /><div className="rating-symbol-foreground" style={{display: 'inline-block', position: 'absolute', overflow: 'hidden', left: '0px', right: '0px', width: '0px'}}><span /></div></div></span><input type="hidden" className="rating" data-filled="mdi mdi-star text-primary" data-empty="mdi mdi-star-outline text-muted" data-readonly defaultValue={3} /><span className="badge bg-info">3</span>
                                   </div>
@@ -482,7 +465,9 @@ import {toast} from "react-toastify";
                                 <div className="px-4 py-3 border-top">
                                   <ul className="list-inline mb-0">
                                     <li className="list-inline-item me-3">
-                                      <button type="button" className="btn btn-success btn-rounded waves-effect waves-light">Join</button>
+                                    <Link to={`/updatelivreur/${livreur._id}`}>
+                                      <button type="button" className="btn btn-success btn-rounded waves-effect waves-light">update</button>
+                                      </Link>
                                     </li>
                                     <li className="list-inline-item me-3">
                                     <Link to={`/email`}>
@@ -493,13 +478,10 @@ import {toast} from "react-toastify";
                                     <Link to={`/profil/${livreur._id}`}>
                                       <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">+info</button>
                                       </Link>
-                                    </li>
-                                    <li className="list-inline-item me-3">
-                                    <Link to={`/updatelivreur/${livreur._id}`}>
-                                      <button type="button" className="btn btn-link btn-rounded waves-effect waves-light">update</button>
-                                      </Link>
-                                     <button class="btn btn-link" onClick={() => onDeleteLivreur(livreur._id)}> Delete</button>
-                                    </li>
+                                      </li>
+                               
+                                         
+                   
                                   </ul>
                                 </div>
                               </div>
@@ -568,4 +550,5 @@ import {toast} from "react-toastify";
       );
 
     }
+
   

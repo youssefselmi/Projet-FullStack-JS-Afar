@@ -3,9 +3,18 @@ import ReactDOM from 'react-dom';
 import ItemDataService from "../services/item.services"
 import {  Link } from "react-router-dom";
 //import 'react-notifications-component/dist/theme.css'
-//import { ReactNotifications } from 'react-notifications-component'
-//import {NotificationContainer, NotificationManager} from 'react-notifications';
-//mport { Store } from "react-notifications-component";
+/*import { ReactNotifications } from 'react-notifications-component'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { Store } from "react-notifications-component";
+import Switch from "react-switch";*/
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import Favorite from "@material-ui/icons/Favorite";
+import IconButton from '@material-ui/core/IconButton';
+import axios from "axios";
+import http from "../http-common";
+
+//import App from "./App";
 
 class afficheproducts extends React.Component{
     constructor(props){
@@ -16,6 +25,8 @@ class afficheproducts extends React.Component{
         this.state={
             _id:null,
             items: [],
+            prix:0 ,
+            favoris:true,
            Curritem: {
                 _id:null,
                 itemName:'',
@@ -28,8 +39,26 @@ class afficheproducts extends React.Component{
            
             
         }
+        this.handleInput=this.handleInput.bind(this);
+        this.handleChange=this.handleChange.bind(this);
 
     }
+    handleChange(favoris){
+        this.setState({favoris})
+
+    }
+    addtofavorit(id,data){
+         http.put(`/modifier/${id}/favoris`,data);
+         console.log(id,data)
+        
+
+    }
+    handleInput  (e){
+        this.setState({ 
+            prix: e.target.value } );
+            
+        
+      }
     setData(id){
        
         localStorage.setItem("ID",id);
@@ -64,6 +93,7 @@ class afficheproducts extends React.Component{
     }
     componentDidMount(){
         this.retrieveItems();
+        
     }
     retrieveItems(){
         ItemDataService.getAll()
@@ -81,7 +111,7 @@ class afficheproducts extends React.Component{
 
     render(){
       
-        const {items,Curritem}=this.state;
+        const {items,Curritem,prix}=this.state;
 
         
          
@@ -92,6 +122,8 @@ class afficheproducts extends React.Component{
        
         return(
             <div>
+                
+                
                  <div id="layout-wrapper">
 
             
@@ -368,96 +400,26 @@ class afficheproducts extends React.Component{
                                         <h4 class="card-title mb-4">Filter</h4>
 
                                         <div>
-                                            <h5 class="font-size-14 mb-3">Clothes</h5>
+                                            <h5 class="font-size-14 mb-3">Categorie</h5>
                                             <ul class="list-unstyled product-list">
-                                                <li><a href="#/"><i class="mdi mdi-chevron-right me-1"></i> T-shirts</a></li>
-                                                <li><a href="#/"><i class="mdi mdi-chevron-right me-1"></i> Shirts</a></li>
-                                                <li><a href="#/"><i class="mdi mdi-chevron-right me-1"></i> Jeans</a></li>
-                                                <li><a href="#/"><i class="mdi mdi-chevron-right me-1"></i> Jackets</a></li>
+                                                <li><a href="cars"><i class="mdi mdi-chevron-right me-1"></i> Cars</a></li>
+                                                <li><a href="clothes"><i class="mdi mdi-chevron-right me-1"></i> Clothes</a></li>
+                                                <li><a href="animals"><i class="mdi mdi-chevron-right me-1"></i> Animals</a></li>
+                                                <li><a href="electro"><i class="mdi mdi-chevron-right me-1"></i> Electronique</a></li>
+                                                <li><a href="jardinage"><i class="mdi mdi-chevron-right me-1"></i> Jardinage</a></li>
                                             </ul>
                                         </div>
                                         <div class="mt-4 pt-3">
-                                            <h5 class="font-size-14 mb-3">Price</h5>
-                                            <input type="text" id="pricerange"/>
+                                            <h5 class="font-size-14 mb-3">Price: { prix }  Dt</h5>
+                                            <input type="range" min={0} max={1000} onChange={ this.handleInput } />
+                                            
+                                           
                                         </div>
 
-                                        <div class="mt-4 pt-3">
-                                            <h5 class="font-size-14 mb-3">Discount</h5>
-                                            <div class="form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" id="productdiscountCheck1"/>
-                                                <label class="form-check-label" for="productdiscountCheck1">
-                                                    Less than 10%
-                                                </label>
-                                            </div>
+                                       
+                                            
 
-                                            <div class="form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" id="productdiscountCheck2"/>
-                                                <label class="form-check-label" for="productdiscountCheck2">
-                                                    10% or more
-                                                </label>
-                                            </div>
-
-                                            <div class="form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" id="productdiscountCheck3" checked/>
-                                                <label class="form-check-label" for="productdiscountCheck3">
-                                                    20% or more
-                                                </label>
-                                            </div>
-
-                                            <div class="form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" id="productdiscountCheck4"/>
-                                                <label class="form-check-label" for="productdiscountCheck4">
-                                                    30% or more
-                                                </label>
-                                            </div>
-
-                                            <div class="form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" id="productdiscountCheck5"/>
-                                                <label class="form-check-label" for="productdiscountCheck5">
-                                                    40% or more
-                                                </label>
-                                            </div>
-
-                                            <div class="form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" id="productdiscountCheck6"/>
-                                                <label class="form-check-label" for="productdiscountCheck6">
-                                                    50% or more
-                                                </label>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="mt-4 pt-3">
-                                            <h5 class="font-size-14 mb-3">Customer Rating</h5>
-                                            <div>
-                                                <div class="form-check mt-2">
-                                                    <input class="form-check-input" type="checkbox" id="productratingCheck1"/>
-                                                    <label class="form-check-label" for="productratingCheck1">
-                                                        4 <i class="bx bxs-star text-warning"></i>  and Above
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mt-2">
-                                                    <input class="form-check-input" type="checkbox" id="productratingCheck2"/>
-                                                    <label class="form-check-label" for="productratingCheck2">
-                                                        3 <i class="bx bxs-star text-warning"></i>  and Above
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mt-2">
-                                                    <input class="form-check-input" type="checkbox" id="productratingCheck3"/>
-                                                    <label class="form-check-label" for="productratingCheck3">
-                                                        2 <i class="bx bxs-star text-warning"></i>  and Above
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check mt-2">
-                                                    <input class="form-check-input" type="checkbox" id="productratingCheck4"/>
-                                                    <label class="form-check-label" for="productratingCheck4">
-                                                        1 <i class="bx bxs-star text-warning"></i>
-                                                    </label>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
+                                       
                                     </div>
                                 </div>
                                 
@@ -494,21 +456,23 @@ class afficheproducts extends React.Component{
                                 
                                 <div class="row">
 
-                                    {items && items.map((item,index)=>
-                                     {    
+                                {
+                                    items && items.filter(item=>{return item.price > parseInt(prix,10)})
+                                    .map((item,index)=>
+                                     {     
                                          this.state.Curritem._id=item._id;
                                          
                                          const splitPath = item.picture.split("\\");
             const path = splitPath[splitPath.length - 1];
-            console.log(image);
-            console.log(path);
+         //   console.log(image);
+          //  console.log(path);
             return(
                                     
                                     <div class="col-xl-4 col-sm-6">
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="product-img position-relative">
-                                                    <img height='220' width='220' src={`http://localhost:3000/${path}`} />
+                                                    <img height='220' widht='220' src={`http://localhost:3000/${path}`} />
                                              
 
                                                     
@@ -516,21 +480,35 @@ class afficheproducts extends React.Component{
                                                 <div class="mt-4 text-center">
                                                     <h5 class="mb-3 text-truncate"><a href="#/" class="text-dark">{item.itemName}</a></h5>
                                                     
-                                                    <p class="text-muted">
-                                                        <i class="bx bxs-star text-warning"></i>
-                                                        <i class="bx bxs-star text-warning"></i>
-                                                        <i class="bx bxs-star text-warning"></i>
-                                                        <i class="bx bxs-star text-warning"></i>
-                                                        <i class="bx bxs-star"></i>
-                                                    </p>
+                                                   
+                                                    
                                                     <h5 class="my-0"><span class="text-muted me-2"></span> <b>{item.price}   DT </b></h5>
+                                                    <br></br>
+                                                   
+                                                    
+                                                    { !item.favoris && 
+<IconButton onClick={() => { this.addtofavorit=this.addtofavorit.bind(item._id,item) }}  aria-label="delete" color="primary">
+<FavoriteBorderIcon></FavoriteBorderIcon>
+</IconButton>
+}
+{item.favoris &&
+<IconButton onClick={() => { this.handleChange(!this.favoris) }} aria-label="delete" color="primary">
+<Favorite></Favorite>
+</IconButton>
+}
+<Link to={`/details/${item._id}`}>
+                                                                <button className="btn btn-dark" >Details</button>
+                                                            </Link>
+                                                    
+                                                    
+                                            
                                                    
 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                 
                                     
                                      );})}
                                     

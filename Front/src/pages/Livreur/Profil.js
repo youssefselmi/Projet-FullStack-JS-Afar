@@ -7,7 +7,21 @@ export default function Profil  (){
  
 
   const [getuserdata, setUserdata] = useState([]);
-  console.log(getuserdata);
+
+  const [updated, setUpdated] = useState(0);
+  const addLike = () => {
+    setUserdata({
+    ...getuserdata,
+    signaler: Number(getuserdata.signaler) + 1,
+  });
+  setUpdated((u) => u + 1);
+};
+
+useEffect(() => {
+  console.log(updated);
+}, [updated]);
+
+  
 
   const { id } = useParams("");
   console.log(id);
@@ -23,6 +37,24 @@ export default function Profil  (){
               "Content-Type": "application/json"
           }
       });
+    
+      const onDeleteComposant = async (id) => {
+      
+        
+              const response = await axios.delete(`http://localhost:3000/livreur/supprimer/${id}`);
+            if (response.status === 200)
+            {
+              
+                loadUsers();
+            }
+          
+
+    }
+    var loadUsers = async () => {
+      var result = await axios.get("http://localhost:3000/livreur/list");
+      setUserdata(result.data.reverse());
+      console.log(result);
+    };
 
       const data = await res.json();
       console.log(data);
@@ -44,10 +76,13 @@ export default function Profil  (){
 
  
     return (
+     
       <div>
         {/* Mirrored from themesbrand.com/skote-django/layouts/contacts-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 15 Feb 2022 20:58:49 GMT */}
         <meta charSet="utf-8" />
         <title>Profile | Skote - Admin &amp; Dashboard Template</title>
+                                     
+                  
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesbrand" name="author" />
@@ -234,6 +269,12 @@ export default function Profil  (){
                   <div className="col-12">
                     <div className="page-title-box d-sm-flex align-items-center justify-content-between">
                       <h4 className="mb-sm-0 font-size-18">Profile</h4>
+
+                      <button  type="submit" className="btn btn-primary waves-effect waves-light" onClick={addLike}>
+                      signaler
+                   </button>    
+                   <label htmlFor="age" className="form-label">signaler : {updated}</label>
+
                       <div className="page-title-right">
                         <ol className="breadcrumb m-0">
                           <li className="breadcrumb-item active">Profile</li>
@@ -254,7 +295,6 @@ export default function Profil  (){
                             </div>
                           </div>
                           <div className="col-5 align-self-end">
-                            <img src="assets/images/profile-img.png" alt="" className="img-fluid" />
                           </div>
                         </div>
                       </div>
@@ -262,7 +302,7 @@ export default function Profil  (){
                         <div className="row">
                           <div className="col-sm-4">
                             <div className="avatar-md profile-user-wid mb-4">
-                              <img src="assets/images/users/avatar-1.jpg" alt="" className="img-thumbnail rounded-circle" />
+                              <img src={getuserdata.picture}  className="img-thumbnail rounded-circle" />
                             </div>
                             <h5 className="font-size-15 text-truncate">{getuserdata.nom} {getuserdata.penom}</h5>
                           </div>
@@ -292,7 +332,11 @@ export default function Profil  (){
                             <tbody>
                               <tr>
                                 <th scope="row">Full Name :</th>
-                                <td>{getuserdata.nom}</td>
+                                <td>{getuserdata.nom} {getuserdata.prenom}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">age veicule:</th>
+                                <td>{getuserdata.age}</td>
                               </tr>
                               <tr>
                                 <th scope="row">Mobile :</th>
@@ -313,6 +357,11 @@ export default function Profil  (){
                                <tr>
                                 <th scope="row">Model veicule:</th>
                                 <td>{getuserdata.modele}</td>
+                              </tr>
+                             
+                              <tr>
+                                <th scope="row">Disponibilite veicule:</th>
+                                <td>{getuserdata.disponibilite}</td>
                               </tr>
                             </tbody>
                           </table>

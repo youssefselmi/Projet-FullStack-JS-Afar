@@ -2,42 +2,85 @@ import React, { useState } from "react";
 import axios from 'axios'
 import { useHistory ,useNavigate} from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
-
-
+import { handle } from "express/lib/application";
+import emailjs from "emailjs-com";
+import {toast} from "react-toastify";
+import { EmailJSResponseStatus } from "emailjs-com";
 function onChange(value){
     
 }
 
 export default function AddLivreur (props){
+ 
+
   const history = useNavigate();
   var [livreur, setlivreur] = useState({
     nom: "",
     prenom: "",
     num:"",
     addr:"",
-    veicule:"",
     password:"",
     region:"",
     modele:"",
     email:"",
     type:"",
+    age:"",
+    disponibilite:"",
     picture:"",
   });
 
-  var { nom, prenom, num, addr,password,region,modele,type ,email,picture} = livreur;
+  var { nom, prenom, num,disponibilite,age, addr,password,region,modele,type ,email,picture} = livreur;
+
+    
+       let  pathimage="assets/images/livreur/"+picture.substr(12);
+
   var onInputChange = e => {
     setlivreur({ ...livreur, [e.target.name]: e.target.value });
     
   };
-  console.log(livreur);
+  console.log(livreur.disponibilite);
 
   const onSubmit = async e => {
-    e.preventDefault();
-    await axios.post("http://localhost:3000/livreur/add", livreur);
+  
+      e.preventDefault();
+     
+      
+      
+        
     
-    alert("votre livreur a ete ajoute")
-    history("/list")
+    const res = await fetch("http://localhost:3000/livreur/add", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        nom, prenom, num,disponibilite,age, addr,password,region,modele,type ,email,picture:pathimage
+      })
+  });
 
+  const data = await res.json();
+  console.log(data);
+
+
+  if (res.status === 422 || !data) {
+      console.log("error ");
+      alert("error");
+      toast.warning("delevry is not added");
+
+  } else {
+    
+    emailjs.sendForm('service_8eypxck','template_ai3igoa',e.target,'KI5QKJoaI4zyYA6U-')
+    .then(res=>{
+      console.log(res);
+    }).catch(err=>console.log(err));
+    alert("Mail Send")
+    
+      history("/list")
+      toast.success(" delevry is Added");
+  }
+
+
+  
   };
   return (
     <div>
@@ -85,42 +128,53 @@ export default function AddLivreur (props){
                   </div>
                   <div className="p-2">
                     <form className="needs-validation" noValidate onSubmit={e => onSubmit(e)} >
-                      <div className="mb-3">
+                    <div className="col-md-8 col-lg-6 col-xl-5">
                         <label htmlFor="firstname" className="form-label">First Name</label>
-                        <input type="text" className="form-control" name="nom" value={nom} onChange={e => onInputChange(e)}  placeholder="Enter First Name" required />
+                        </div>
+                        <input type="text" className="form-control" name="nom" value={nom} onChange={e => onInputChange(e)}  placeholder=" Please Enter First name" required />
                         <div className="invalid-feedback">
                           Please Enter First name
-                        </div>  
-                      </div>
-                      <div className="mb-3">
+                        </div>           
+                      <div className="col-md-8 col-lg-6 col-xl-5">
                         <label htmlFor="lastname" className="form-label">Last Name</label>
-                        <input type="text" className="form-control" name="prenom"  value={prenom} onChange={(e) => onInputChange(e)} placeholder="Enter Last Name" required />
+                        </div>
+                        <input type="text" className="form-control" name="prenom"  value={prenom} onChange={(e) => onInputChange(e)} placeholder=" Please Enter Last Name" required />
                         <div className="invalid-feedback">
                           Please Enter Last name
                         </div>  
-                      </div>
-                      <div className="mb-3">
+                   
+                        <div className="col-md-8 col-lg-6 col-xl-5">
+                        <label htmlFor="age" className="form-label">Age</label>
+                        </div>
+                        <input type="text" className="form-control" name="age"  value={age} onChange={(e) => onInputChange(e)} placeholder="Please Enter Last Name" required />
+                        <div className="invalid-feedback">
+                          Please Enter Your Age
+                         </div>
+                         <div className="col-md-8 col-lg-6 col-xl-5">
                         <label htmlFor="phonenumber" className="form-label">Phone Number</label>
-                        <input type="text" className="form-control" name="num" value={num} onChange={(e) => onInputChange(e)}  placeholder="Enter Phone Number" required />
+                        </div>
+                        <input type="text" className="form-control" name="num" value={num} onChange={(e) => onInputChange(e)}  placeholder="Please Enter Phone Number" required />
                         <div className="invalid-feedback">
                           Please Enter Phone Number
-                        </div>  
+                         
                       </div>
-                      <div className="mb-3">
+                      <div className="col-md-8 col-lg-6 col-xl-5">
                         <label htmlFor="adress" className="form-label">Adress</label>
-                        <input type="text" className="form-control" name="addr" value={addr} onChange={(e) => onInputChange(e)}  placeholder="Enter Adress" required />
+                        </div>
+                        <input type="text" className="form-control" name="addr" value={addr} onChange={(e) => onInputChange(e)}  placeholder="Please Enter Adress" required />
                         <div className="invalid-feedback">
                           Please Enter Adress
-                        </div>  
+                       
                       </div>
-                      <div className="mb-3">
+                      <div className="col-md-8 col-lg-6 col-xl-5">
                         <label htmlFor="region" className="form-label">Region</label>
-                        <input type="text" className="form-control" name="region" value={region} onChange={(e) => onInputChange(e)} placeholder="Enter Region" required />
+                        </div>
+                        <input type="text" className="form-control" name="region" value={region} onChange={(e) => onInputChange(e)} placeholder="Please Enter Region" required />
                         <div className="invalid-feedback">
                           Please Enter Region
-                        </div>  
+                        
                       </div>
-                      <div className="mb-3">
+                      <div className="col-md-8 col-lg-6 col-xl-5">
                         <label htmlFor="vehicle"   className="form-label">Vehicle</label>
                       </div>
                       <div className="mb-3">
@@ -131,29 +185,48 @@ export default function AddLivreur (props){
                           <option value="Volswagen">Volswagen</option>
                           <option value="Ford">Ford</option>
                         </select>
-                        <select name="model" value={modele} onChange={(e) => onInputChange(e)} required  >
+                          <select name="modele" value={modele} onChange={(e) => onInputChange(e)} required  >
                           <option value>Please choose Model</option>
-                          <option value="dog">2010</option>
+                          <option value="2010">2010</option>
                           <option value="2011">2011</option>
                           <option value="2012">2012</option>
                           <option value="2013">2013</option>
                         </select>
-                      </div>     
-                      <div className="mb-3">
+                      </div>   
+                     
+                      <div className="col-md-8 col-lg-6 col-xl-5">
+                      <label htmlFor="disponibilite">disponibilite</label>
+                     </div>  
+                     <div>
+                     all days  <input type="checkbox" onChange={(e) => onInputChange(e)}  name="disponibilite" value=" all days"/>
+                     </div>  
+                     <div>
+                     afternoon  <input type="checkbox" onChange={(e) => onInputChange(e)}  name="disponibilite" value="afternoon"/>
+                    </div>                     
+                     <div>
+                      morning  <input type="checkbox" onChange={(e) => onInputChange(e)}  name="disponibilite" value="morning "/>
+                     </div>
+                     <div>
+                       weekend  <input type="checkbox" onChange={(e) => onInputChange(e)}  name="disponibilite" value="weekend "/>                 
+                     </div>
+  
+                     <div className="col-md-8 col-lg-6 col-xl-5">
                         <label htmlFor="email" className="form-label">Email</label>
-                        <input type="email" className="form-control" value={email} onChange={(e) => onInputChange(e)}  name="email" placeholder="Enter email" required />  
+                        </div>
+                        <input type="email" className="form-control" value={email} onChange={(e) => onInputChange(e)}  name="email" placeholder="Please Enter email" required />  
                         <div className="invalid-feedback">
                           Please Enter Email
                         </div>      
-                      </div>
-                      <div className="mb-3">
+                     
+                        <div className="col-md-8 col-lg-6 col-xl-5">
                         <label htmlFor="userpassword" className="form-label">Password</label>
-                        <input type="password" className="form-control" value={password} name="password" onChange={(e) => onInputChange(e)}  placeholder="Enter password" required />
+                        </div> 
+                        <input type="password" className="form-control" value={password} name="password" onChange={(e) => onInputChange(e)}  placeholder="Please Enter password" required />
                         <div className="invalid-feedback">
                           Please Enter Password
-                        </div>       
+                           
                       </div>
-                      <div className="mt-4 d-grid">
+                      <div className="col-md-8 col-lg-6 col-xl-5">
                         <label htmlFor="picture" >Picture</label>
                         <input type="file"  value={picture} name="picture" onChange={(e) => onInputChange(e)}   required />
                         <div className="invalid-feedback">

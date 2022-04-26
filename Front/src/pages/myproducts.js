@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from 'react-dom';
 import ItemDataService from "../services/item.services"
 import {  Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //import 'react-notifications-component/dist/theme.css'
 //import { ReactNotifications } from 'react-notifications-component'
 //import {NotificationContainer, NotificationManager} from 'react-notifications';
@@ -9,6 +11,8 @@ import {  Link } from "react-router-dom";
 
 class myproducts extends React.Component{
     constructor(props){
+        
+        
         super(props)
        this.retrieveItems=this.retrieveItems.bind(this)
      
@@ -28,8 +32,11 @@ class myproducts extends React.Component{
            
             
         }
+        
 
+        
     }
+    
     setData(id){
        
         localStorage.setItem("ID",id);
@@ -39,12 +46,17 @@ class myproducts extends React.Component{
     
      deleteitem (id){
         
-
-       if(window.confirm("Are you sure you want to delete")){
+        console.log(id)
+       if(window.confirm("Are you sure you want to delete ")){
+            toast("vous allez supprimer cet objet")
            //var formData=new formData();
            //formData.append("")
+           
            ItemDataService.delete(id)
+           
            .then(response=>{
+               
+               
                window.location.reload()
 
                 
@@ -65,7 +77,11 @@ class myproducts extends React.Component{
     componentDidMount(){
         this.retrieveItems();
     }
+    notify() {
+        toast(" aaaa");
+    }
     retrieveItems(){
+       // const  [query,setQuery]=useState("")
         ItemDataService.getAll()
         .then(res=>{
             this.setState({
@@ -82,6 +98,7 @@ class myproducts extends React.Component{
     render(){
       
         const {items,Curritem}=this.state;
+       
 
         
          
@@ -92,6 +109,75 @@ class myproducts extends React.Component{
        
         return(
             <div>
+                 <div class="vertical-menu">
+
+<div data-simplebar class="h-100">
+
+    
+    <div id="sidebar-menu">
+       
+        <ul class="metismenu list-unstyled" id="side-menu">
+            
+
+            
+
+            <li class="menu-title" key="t-apps">Apps</li>
+            <li>
+                <a href="myproducts" class="waves-effect">
+                    <i class="bx bx-chat"></i>
+                    <span key="t-chat">MY ITEMS</span>
+                </a>
+            </li>
+            <li>
+                <a href="Home" class="waves-effect">
+                    <i class="bx bx-chat"></i>
+                    <span key="t-chat">SELL ITEMS</span>
+                </a>
+            </li>
+            <li>
+                <a href="affichage" class="waves-effect">
+                    <i class="bx bx-chat"></i>
+                    <span key="t-chat">NEW ITEMS</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="Broken" class="waves-effect">
+                    <i class="bx bx-file"></i>
+                    
+                    <span key="t-file-manager">Sell A Broken Piece</span>
+                </a>
+            </li>
+            <li>
+                <a href="afficher" class="waves-effect">
+                    <i class="bx bx-chat"></i>
+                    <span key="t-chat">BROKEN ITEMS</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#/" class="has-arrow waves-effect">
+                    <i class="bx bx-envelope"></i>
+                    <span key="t-email">Email</span>
+                </a>
+                <ul class="sub-menu" >
+                    <li><a href="email-inbox.html" key="t-inbox">Inbox</a></li>
+                    <li><a href="email-read.html" key="t-read-email">Read Email</a></li>
+                    
+                </ul>
+            </li>
+
+            
+
+           
+
+            
+
+        </ul>
+    </div>
+ 
+</div>
+</div>
                  <div id="layout-wrapper">
 
             
@@ -376,7 +462,7 @@ class myproducts extends React.Component{
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="product-img position-relative">
-                                                    <img height='220' width='220'src={`http://localhost:3000/${path}`} />
+                                                    <img height='220' width='220' src={`http://localhost:3000/${path}`} />
                                              
 
                                                     
@@ -392,17 +478,32 @@ class myproducts extends React.Component{
                                                         <i class="bx bxs-star"></i>
                                                     </p>
                                                     <h5 class="my-0"><span class="text-muted me-2"></span> <b>{item.price}   DT </b></h5>
-                                                    <button 
-                                    type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect"
-                                    onClick={ this.deleteitem=this.deleteitem.bind(this,item._id)} 
-                                  >
-                                    Delete
-                                  </button>
-                                  
-                                  <Link className="edit-link" 
+                                                    <br></br>
+                                                    <Link className="edit-link" 
           to={"/update/" + item._id}>
-          <button class="btn btn-sm px-3 font-size-16 header-item waves-effect" onClick={this.setData=this.setData.bind(this,item._id)}> edit </button>
+          <button class="btn btn-danger" onClick={this.setData=this.setData.bind(this,item._id)}> edit </button>
         </Link>
+        <br></br>
+        <br></br>
+                                                    
+                                  <Link to={`/detailsback/${item._id}`}>
+                                                                <button className="btn btn-dark" >Details</button>
+                                                            </Link>
+                                 
+                                  <ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
+
+                                  
+                                  
 
                                                 </div>
                                             </div>

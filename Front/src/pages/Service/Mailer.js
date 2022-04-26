@@ -14,6 +14,7 @@ const Mailer = () => {
         alert("Mail Send")
       
         history("/listService")
+        
     }
     return(
         <div className="container border"

@@ -1,9 +1,13 @@
 import React, {Component} from "react";
 import {  useNavigate } from "react-router-dom";
+import emailjs from "emailjs-com"
 //import { BrowserRouter, Route, Link } from "react-router-dom";
 import ItemDataService from "../services/item.services";
-//mport Select from 'react-select';
- import emailjs from "emailjs-com";
+//import Select from 'react-select';
+import { ToastContainer, toast } from 'react-toastify';
+//import 'react-toastify/dist/ReactToastify.css';
+
+
 
 export default class Home extends Component{
     
@@ -18,6 +22,7 @@ export default class Home extends Component{
             picture:"",
             price:"",
             categorie:"",
+            descreption:"",
             submitted:false,
     
         };
@@ -27,6 +32,7 @@ export default class Home extends Component{
         this.onChangePicture =  this.onChangePicture.bind(this);
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeCategorie = this.onChangeCategorie.bind(this);
+        this.onChangeDescreption=this.onChangeDescreption.bind(this);
         this.saveItem=this.saveItem.bind(this);
         
     }
@@ -50,6 +56,11 @@ export default class Home extends Component{
     onChangePrice(e){
         this.setState({
             price: e.target.value
+        });
+    }
+    onChangeDescreption(e){
+        this.setState({
+            descreption: e.target.value
         });
     }
    /* saveItem(){
@@ -98,11 +109,12 @@ saveItem(e){
   formData.append('itemName',this.state.itemName)
   formData.append('categorie',this.state.categorie)
   formData.append('price',this.state.price)
+  formData.append('descreption',this.state.descreption)
   ItemDataService.create(formData)
   .then(response => {
     //var form=this.state
     console.log(response)
-    alert("votre produit a ete ajoute")
+    toast("vous avez ajoute un produit")
     var templateParams = {
         name: 'item',
         notes: 'hi'
@@ -110,7 +122,7 @@ saveItem(e){
     
    // const form = useRef();
     //e.preventDefault();
-    emailjs.send('service_mt4njrq', 'template_trd09xj',templateParams, '_wbRyyw5RN5zysiVt')
+   //emailjs.send('service_mt4njrq', 'template_trd09xj',templateParams, '_wbRyyw5RN5zysiVt')
     
       
       //e.target.reset();
@@ -125,6 +137,7 @@ newItem(){
         picture:"",
         price:"",
         categorie:"",
+        descreption:"",
         submitted:false
 
     });
@@ -138,6 +151,7 @@ render()
     return (
      
       <div>
+          
             
       <div>
       <div id="layout-wrapper">
@@ -149,7 +163,7 @@ render()
   
   <div class="navbar-brand-box">
       <a href="index.html" class="logo logo-dark">
-          <span class="logo-sm">
+      <span class="logo-sm">
               <img src="assets/images/logo.svg" alt="" height="22"/>
           </span>
           <span class="logo-lg">
@@ -413,8 +427,8 @@ render()
           <div class="card-body">
 
          
-  
-          <div className="form-group" class="mb-3 row">
+  <center>
+          <div className="form-group" class="mb-3 col-lg-6 col-md-6 col-12">
         <label htmlFor="itemName">Name</label>
         <input
           type="text"
@@ -426,7 +440,9 @@ render()
           name="itemName"
         />
       </div>
-      <div className="form-group" class="mb-3 row">
+      </center>
+      <center>
+      <div className="form-group" class="mb-3 col-lg-6 col-md-6 col-12">
         <label htmlFor="picture">Picture</label>
         <input
           type="file"
@@ -438,7 +454,9 @@ render()
           name="picture"
         />
       </div>
-      <div className="form-group" class="mb-3 row">
+      </center>
+      <center>
+      <div className="form-group" class="mb-3 col-lg-6 col-md-6 col-12">
         <label htmlFor="price">Price</label>
         <input
           type="number"
@@ -450,23 +468,41 @@ render()
           name="price"
         />
       </div> 
-      <div className="form-group" class="mb-3 row">
-        <label htmlFor="categorie">Categorie</label>
-        <input
-          type="text"
+      </center>
+      <center>
+      <div className="mb-3 col-lg-6 col-md-6 col-12">
+                                                            <label htmlFor="exampleInputPassword1"
+                                                                   className="form-label">Gategorie</label>
+                                                            <select value={this.state.categorie}  onChange={this.onChangeCategorie} name="categorie"
+                                                                    className="form-control" id="exampleInputPassword1">
+                                                                <option value="Clothes">Clothes</option>
+                                                                <option value="Animals">Animals</option>
+                                                                <option value="Electronique">Electronique</option>
+                                                                <option value="Cars">CARS</option>
+                                                                <option value="Jardinage">Jardinage</option>
+
+                                                            </select>
+                                                        </div>
+                                                        </center>
+      <center><div className="form-group" class="mb-3 col-lg-8 col-md-10 col-12">
+        <label htmlFor="descreption">Descreption</label>
+        <textarea
+          type="textarea"
           className="form-control"
-          id="categorie"
+          id="descreption"
           options={this.options}
           required
-          value={this.state.categorie}
-          onChange={this.onChangeCategorie}
-          name="categorie"
+          value={this.state.descreption}
+          onChange={this.onChangeDescreption}
+          name="descreption"
         />
       </div>
+      </center>
       <button onClick={this.saveItem} className="btn btn-success">
         Submit
         
       </button>
+      <ToastContainer />
 
       
 

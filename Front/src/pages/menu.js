@@ -5,6 +5,12 @@ class menu extends React.Component{
     render(){
         return(
             <div>
+
+
+
+
+
+                
                 <div class="vertical-menu">
 
 <div data-simplebar class="h-100">
@@ -49,7 +55,7 @@ class menu extends React.Component{
                 </a>
             </li>
             <li>
-                <a href="affiche" class="waves-effect">
+                <a href="affichage" class="waves-effect">
                     <i class="bx bx-chat"></i>
                     <span key="t-chat">NEW ITEMS</span>
                 </a>
@@ -76,6 +82,13 @@ class menu extends React.Component{
  
 </div>
 </div>
+
+
+
+
+
+
+
             </div>
 
         )
