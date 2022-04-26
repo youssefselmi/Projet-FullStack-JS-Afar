@@ -12,8 +12,16 @@ router.use(cors());
 
 
 router.get('/list',async(req,res)=>{
+    
+
     try{
+        
+        Service.deleteMany(
+            {signal:{$gte:3}}
+        ).exec()
         const services = await Service.find()
+        
+        
         res.json(services)
   
     }catch(err){
@@ -93,9 +101,8 @@ router.post('/add', function(req, res, next) {
           })
           router.post("/signal/:id", (req, res, next) => {
             Service.findOneAndUpdate({ _id: req.params.id }, { $inc: { signal: 1 } }).exec();
-            Service.findOneAndDelete(
-                { _id : req.params.id,signal: { $gte: 3}} 
-             )
+           
+            
             res.json("done");
           });
 
