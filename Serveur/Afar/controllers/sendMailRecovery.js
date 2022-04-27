@@ -18,7 +18,7 @@ const oauth2Client = new OAuth2(
 )
 
 // send mail
-const sendEmail = (receiver,otp) => {
+const sendRecoveryMail = (receiver,otp) => {
     oauth2Client.setCredentials({
         refresh_token: MAILING_SERVICE_REFRESH_TOKEN
     })
@@ -42,16 +42,15 @@ const sendEmail = (receiver,otp) => {
     const mailOptions = {
         from: 'Afar-team',
         to : receiver,
-        subject: "Afar account verification",
+        subject: "Account recovery",
         html: `
             <div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
-            <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to Afar✮.</h2>
-            <p>Congratulations! You're almost set to start using Afar✮.
-                You will need your activation key to proceed.
+            <h2 style="text-align: center; text-transform: uppercase;color: green;">Welcome to Afar✮.</h2>
+            <p>To be able to change your password you will need this secret code..
             </p>
             
             
-            <p> Speaking of the devil ! Here is your account activation key : </p>
+            <p> This one : </p>
         
             <div>
             <h1>${otp}</h1>
@@ -63,4 +62,4 @@ const sendEmail = (receiver,otp) => {
     smtpTransport.sendMail(mailOptions)
 }
 
-module.exports = sendEmail
+module.exports = sendRecoveryMail

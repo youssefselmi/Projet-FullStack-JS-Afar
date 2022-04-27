@@ -4,17 +4,83 @@ import { Link, useParams,useNavigate } from 'react-router-dom'
 import React, { useContext, useState,useEffect } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import { adddata } from './context/ContextProvider';
-import {axios} from 'axios'
+import axios from 'axios'
+import jwt_decode from "jwt-decode";
 import {toast} from "react-toastify";
+import { Token } from "@mui/icons-material";
+
 
 const Authentication = ()=>{
 
+    const [result,setResult] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const goTo = useNavigate();
 
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        //console.log(localStorage.getItem(Token));
+
+            //const credentials = [email,password];
+            //console.log("credentials are : "+credentials);
+           const response = await axios.post("http://localhost:3000/auth/login",{email,password});
+
+       
+  /*              
+        const res = await fetch("http://localhost:3000/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email,password
+            })
+        }); 
+*/ console.log(response);
+        
+        if(response.status === 200){
+           
+           localStorage.setItem("token", response.data.token);
+           const decoded =  jwt_decode(response.data.token);
+            localStorage.setItem("EmailUser", decoded.email);
+            localStorage.setItem("firstNameUser",response.data.result.firstName);
+            localStorage.setItem("lastNameUser",response.data.result.lastName);
+            localStorage.setItem("Role",response.data.result.roles);
+            localStorage.setItem("accountState",response.data.result.accountState);
+            localStorage.setItem("verified",response.data.result.verified)
+            localStorage.setItem("checkAuth",true);
+            localStorage.setItem("additionalinfo",response.data.result.additionalInfo);
+            //const additionalinfo = response.data.result.additionalInfo
+            
+           
+            if(localStorage.getItem("Role") === "user" ){
+                if(response.data.result.additionalInfo)
+                goTo("/userProfile");
+                else goTo("/addinfo");
+                //else 
+                  //  toast.error("Your account has been banned.");
+                }
+                
+            else if (localStorage.getItem("Role") === "admin"){
+                goTo("/dashboard");
+            }           
+        
+        
+            setResult(response.data.result);
+            toast.success("Welcome to AFAR.");
+
+             }else if(response.status === 404)
+                 {
+            toast.warn("Email is not registered");
+                 }
+    }
+
+    
    return (
+       
     <div class="account-pages my-5 pt-sm-5">
+        
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-8 col-lg-6 col-xl-5">
@@ -51,7 +117,7 @@ const Authentication = ()=>{
                                     </a>
                                 </div>
                                 <div class="p-2">
-                                    <form class="form-horizontal" action="https://themesbrand.com/skote-django/layouts/index.html">
+                                    <form class="form-horizontal" onSubmit={handleSubmit}>
         
                                         <div class="mb-3">
                                             <label htmlFor="email" class="form-label">email</label>
@@ -69,7 +135,7 @@ const Authentication = ()=>{
                                        
                                         
                                         <div class="mt-3 d-grid">
-                                            <button class="btn btn-primary waves-effect waves-light" type="submit">Log In</button>
+                                            <button class="btn btn-primary waves-effect waves-light" type="submit" >Sign In</button>
                                         </div>
             
                                         <div class="mt-4 text-center">
@@ -95,8 +161,9 @@ const Authentication = ()=>{
                                         </div>
 
                                         <div class="mt-4 text-center">
-                                            <a href="auth-recoverpw.html" class="text-muted"><i class="mdi mdi-lock me-1"></i> Forgot your password?</a>
-                                        </div>
+                                        <span> <Link to = "/PasswordRecover"> Forgot your password ? </Link> </span>
+
+                                            </div>
                                     </form>
                                 </div>
             
@@ -105,7 +172,7 @@ const Authentication = ()=>{
                         <div class="mt-5 text-center">
                             
                             <div>
-                                <span>Don't have an account ? <Link to = "/register"> Signup now </Link> </span>
+                                <span>Don't have an account ? <Link to = "/register"> Sign up now </Link> </span>
                                 <p>© 2022 AFAR. Crafted with <i class="mdi mdi-heart text-danger"></i> by SKOLLS</p>
                             </div>
                         </div>

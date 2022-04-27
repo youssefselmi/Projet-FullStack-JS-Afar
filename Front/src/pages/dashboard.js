@@ -1,1090 +1,549 @@
+import React , {useState,useEffect,useContext} from "react";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import "./listecomposant.css";
-import { Link, useParams,useNavigate } from 'react-router-dom'
-
-import React, { useContext, useState,useEffect } from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
-import { adddata } from './context/ContextProvider';
-import {axios} from 'axios'
+import axios from "axios";
 import {toast} from "react-toastify";
+import { updatedata } from './context/ContextProvider'
 
-const dashboard = ()=>{
-    return (
-        <div id="layout-wrapper">
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
 
-                <div class="navbar-header">
-                    <div class="d-flex">
-                      
-                        <div class="navbar-brand-box">
-                            <a href="index.html" class="logo logo-dark">
-                                <span class="logo-sm">
-                                    <img src="assets/images/logo.svg" alt="" height="22"/>
-                                </span>
-                                <span class="logo-lg">
-                                    <img src="assets/images/logoo.png" alt="" height="17"/>
-                                </span>
-                            </a>
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import $ from 'jquery'; 
 
-                            <a href="index.html" class="logo logo-light">
-                                <span class="logo-sm">
-                                    <img src="assets/images/logo-light.svg" alt="" height="22"/>
-                                </span>
-                                <span class="logo-lg">
-                                    <img src="assets/images/logo-light.png" alt="" height="19"/>
-                                </span>
-                            </a>
-                        </div>
+import { Dashboard } from "@mui/icons-material";
 
-                        <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
-                            <i class="fa fa-fw fa-bars"></i>
-                        </button>
 
+
+const Dash = () => {
+
+
+    const [data, setData] = useState([]);
+    useEffect(()=>{
+            getUsers();
+        },[]
+    );
+
+    const getUsers = async () => {
+        const response = await axios.get("http://localhost:3000/users/afficher");
+        if (response.status === 200){
+            setData(response.data);
+        }
+
+    };
+
+
+
+
+
+
+
+/////////////////// Delete //////////////////////////////
+    const onDeleteUser = async (id) => {
+      
+            const response = await axios.delete(`http://localhost:3000/users/delete/${id}`);
+            if (response.status === 200)
+            {
+                toast.success(response.data);
+                getUsers();
+            } 
+    }
+
+    const onBanUser = async (id) => {
+      
+            const response = await axios.put(`http://localhost:3000/users/ban/${id}`);
+            if (response.status === 200)
+            {
+                toast.success(response.data);
+                getUsers();
+            }
         
+    }
 
-            
-
-            
-            <div class="main-content">
-
-                <div class="page-content">
-                    <div class="container-fluid">
-
-                     
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Blog</h4>
-
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboards</a></li>
-                                            <li class="breadcrumb-item active">Blog</li>
-                                        </ol>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                       
-
-                        <div class="row">
-
-                            <div class="col-xl-8">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="card mini-stats-wid">
-                                            <div class="card-body">
-                                                
-                                                <div class="d-flex flex-wrap">
-                                                    <div class="me-3">
-                                                        <p class="text-muted mb-2">Total Post</p>
-                                                        <h5 class="mb-0">120</h5>
-                                                    </div>
+    const onUnBanUser = async (id) => {
+      
+        const response = await axios.put(`http://localhost:3000/users/unban/${id}`);
+        if (response.status === 200)
+        {
+            toast.success(response.data);
+            getUsers();
+        }
     
-                                                    <div class="avatar-sm ms-auto">
-                                                        <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                                            <i class="bx bxs-book-bookmark"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-lg-4">
-                                        <div class="card blog-stats-wid">
-                                            <div class="card-body">
-
-                                                <div class="d-flex flex-wrap">
-                                                    <div class="me-3">
-                                                        <p class="text-muted mb-2">Pages</p>
-                                                        <h5 class="mb-0">86</h5>
-                                                    </div>
-    
-                                                    <div class="avatar-sm ms-auto">
-                                                        <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                                            <i class="bx bxs-note"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="card blog-stats-wid">
-                                            <div class="card-body">
-                                                <div class="d-flex flex-wrap">
-                                                    <div class="me-3">
-                                                        <p class="text-muted mb-2">Comments</p>
-                                                        <h5 class="mb-0">4,235</h5>
-                                                    </div>
-    
-                                                    <div class="avatar-sm ms-auto">
-                                                        <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                                            <i class="bx bxs-message-square-dots"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                               
-
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex flex-wrap align-items-start">
-                                            <h5 class="card-title me-2">Visitors</h5>
-                                            <div class="ms-auto">
-                                                <div class="toolbar d-flex flex-wrap gap-2 text-end">
-                                                    <button type="button" class="btn btn-light btn-sm">
-                                                        ALL
-                                                    </button>
-                                                    <button type="button" class="btn btn-light btn-sm">
-                                                        1M
-                                                    </button>
-                                                    <button type="button" class="btn btn-light btn-sm">
-                                                        6M
-                                                    </button>
-                                                    <button type="button" class="btn btn-light btn-sm active">
-                                                        1Y
-                                                    </button>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row text-center">
-                                            <div class="col-lg-4">
-                                                <div class="mt-4">
-                                                    <p class="text-muted mb-1">Today</p>
-                                                    <h5>1024</h5>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-lg-4">
-                                                <div class="mt-4">
-                                                    <p class="text-muted mb-1">This Month</p>
-                                                    <h5>12356 <span class="text-success font-size-13">0.2 % <i class="mdi mdi-arrow-up ms-1"></i></span></h5>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-4">
-                                                <div class="mt-4">
-                                                    <p class="text-muted mb-1">This Year</p>
-                                                    <h5>102354 <span class="text-success font-size-13">0.1 % <i class="mdi mdi-arrow-up ms-1"></i></span></h5>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        
-                                        
-                                        <div class="apex-charts" id="area-chart" dir="ltr"></div>
-                                    </div>
-                                </div>
-                            </div>
-                           
-
-                            <div class="col-xl-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-sm rounded-circle img-thumbnail"/>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex">
-                                                    <div class="flex-grow-1">
-                                                        <div class="text-muted">
-                                                            <h5 class="mb-1">Henry wells</h5>
-                                                            <p class="mb-0">UI / UX Designer</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="flex-shrink-0 dropdown ms-2">
-                                                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="bx bxs-cog align-middle me-1"></i> Setting
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <a class="dropdown-item" href="#">Action</a>
-                                                            <a class="dropdown-item" href="#">Another action</a>
-                                                            <a class="dropdown-item" href="#">Something else</a>
-                                                        </div>
-                                                    </div>  
-                                                </div>
-                                                
-
-                                                
-
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <div>
-                                                            <p class="text-muted text-truncate mb-2">Total Post</p>
-                                                            <h5 class="mb-0">32</h5>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div>
-                                                            <p class="text-muted text-truncate mb-2">Subscribes</p>
-                                                            <h5 class="mb-0">10k</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex flex-wrap align-items-start">
-                                            <h5 class="card-title mb-3 me-2">Subscribes</h5>
-
-                                            <div class="dropdown ms-auto">
-                                                <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                </a>
-                                              
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Action</a>
-                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex flex-wrap">
-                                            <div>
-                                                <p class="text-muted mb-1">Total Subscribe</p>
-                                                <h4 class="mb-3">10,512</h4>
-                                                <p class="text-success mb-0"><span>0.6 % <i class="mdi mdi-arrow-top-right ms-1"></i></span></p>
-                                            </div>
-                                            <div class="ms-auto align-self-end">
-                                                <i class="bx bx-group display-4 text-light"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card">
-                                    <div class="card-body p-4">
-                                        <div class="text-center">
-                                            <div class="avatar-md mx-auto mb-4">
-                                                <div class="avatar-title bg-light rounded-circle text-primary h1">
-                                                    <i class="mdi mdi-email-open"></i>
-                                                </div>
-                                            </div>
-
-                                            <div class="row justify-content-center">
-                                                <div class="col-xl-10">
-                                                    <h4 class="text-primary">Subscribe !</h4>
-                                                    <p class="text-muted font-size-14 mb-4">Subscribe our newletter and get notification to stay update.</p>
-
-                                                    <div class="input-group bg-light rounded">
-                                                        <input type="email" class="form-control bg-transparent border-0" placeholder="Enter Email address" aria-label="Recipient's username" aria-describedby="button-addon2"/>
-                                                        
-                                                        <button class="btn btn-primary" type="button" id="button-addon2">
-                                                            <i class="bx bxs-paper-plane"></i>
-                                                        </button>
-                                                        
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-             
-                        </div>
-                        
-
-                        <div class="row">
-                            <div class="col-xl-4 col-lg-6">
-                                <div class="card">
-                                    <div class="card-header bg-transparent border-bottom">
-                                        <div class="d-flex flex-wrap align-items-start">
-                                            <div class="me-2">
-                                                <h5 class="card-title mt-1 mb-0">Posts</h5>
-                                            </div>
-                                            <ul class="nav nav-tabs nav-tabs-custom card-header-tabs ms-auto" role="tablist">
-                                                <li class="nav-item">
-                                                    <a class="nav-link active" data-bs-toggle="tab" href="#post-recent" role="tab">
-                                                        Recent
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#post-popular" role="tab">
-                                                        Popular
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="card-body">
-
-                                        <div data-simplebar style="max-height: 295px;">
-                                  
-                                            <div class="tab-content">
-                                                <div class="tab-pane active" id="post-recent" role="tabpanel">
-                                                    <ul class="list-group list-group-flush">
-                                                        <li class="list-group-item py-3">
-                                                            <div class="d-flex">
-                                                                <div class="me-3">
-                                                                    <img src="assets/images/small/img-2.jpg" alt="" class="avatar-md h-auto d-block rounded"/>
-                                                                </div>
-                                                                
-                                                                <div class="align-self-center overflow-hidden me-auto">
-                                                                    <div>
-                                                                        <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" class="text-dark">Beautiful Day with Friends</a></h5>
-                                                                        <p class="text-muted mb-0">10 Nov, 2020</p>
-                                                                    </div>
-                                                                </div>
-                
-                                                                <div class="dropdown ms-2">
-                                                                    <a class="text-muted font-size-14" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a class="dropdown-item" href="#">Action</a>
-                                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-
-                                                        <li class="list-group-item py-3">
-                                                            <div class="d-flex">
-                                                                <div class="me-3">
-                                                                    <img src="assets/images/small/img-6.jpg" alt="" class="avatar-md h-auto d-block rounded"/>
-                                                                </div>
-                                                                <div class="align-self-center overflow-hidden me-auto">
-                                                                    <div>
-                                                                        <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" class="text-dark">Drawing a sketch</a></h5>
-                                                                        <p class="text-muted mb-0">02 Nov, 2020</p>
-                                                                    </div>
-                                                                </div>
-        
-                                                                <div class="dropdown ms-2">
-                                                                    <a class="text-muted font-size-14" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a class="dropdown-item" href="#">Action</a>
-                                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-
-                                                        <li class="list-group-item py-3">
-                                                            <div class="d-flex">
-                                                                <div class="me-3">
-                                                                    <img src="assets/images/small/img-2.jpg" alt="" class="avatar-md h-auto d-block rounded"/>
-                                                                </div>
-
-                                                                <div class="align-self-center overflow-hidden me-auto">
-                                                                    <div>
-                                                                        <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" class="text-dark">Project discussion with team</a></h5>
-                                                                        <p class="text-muted mb-0">24 Oct, 2020</p>
-                                                                    </div>
-                                                                </div>
-        
-                                                                <div class="dropdown ms-2">
-                                                                    <a class="text-muted font-size-14" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a class="dropdown-item" href="#">Action</a>
-                                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-
-                                                        <li class="list-group-item py-3">
-                                                            <div class="d-flex">
-                                                                <div class="me-3">
-                                                                    <img src="assets/images/small/img-1.jpg" alt="" class="avatar-md h-auto d-block rounded"/>
-                                                                </div>
-                                                                    
-                                                                <div class="align-self-center overflow-hidden me-auto">
-                                                                    <div>
-                                                                        <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" class="text-dark">Riding bike on road</a></h5>
-                                                                        <p class="text-muted mb-0">20 Oct, 2020</p>
-                                                                    </div>
-                                                                </div>
-        
-                                                                <div class="dropdown ms-2">
-                                                                    <a class="text-muted font-size-14" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a class="dropdown-item" href="#">Action</a>
-                                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                
-
-                                                <div class="tab-pane" id="post-popular" role="tabpanel">
-                                                    
-                                                    <ul class="list-group list-group-flush">
-
-                                                        <li class="list-group-item py-3">
-                                                            <div class="d-flex">
-                                                                <div class="me-3">
-                                                                    <img src="assets/images/small/img-6.jpg" alt="" class="avatar-md h-auto d-block rounded"/>
-                                                                </div>
-                                                                    
-                                                                <div class="align-self-center overflow-hidden me-auto">
-                                                                    <div>
-                                                                        <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" class="text-dark">Drawing a sketch</a></h5>
-                                                                        <p class="text-muted mb-0">02 Nov, 2020</p>
-                                                                    </div>
-                                                                </div>
-        
-                                                                <div class="dropdown ms-2">
-                                                                    <a class="text-muted font-size-14" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a class="dropdown-item" href="#">Action</a>
-                                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                            </div>
-                                                        </li>
-
-                                                        <li class="list-group-item py-3">
-                                                            <div class="d-flex">
-                                                                <div class="me-3">
-                                                                    <img src="assets/images/small/img-2.jpg" alt="" class="avatar-md h-auto d-block rounded"/>
-                                                                </div>
-                                                                    
-                                                                <div class="align-self-center overflow-hidden me-auto">
-                                                                    <div>
-                                                                        <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" class="text-dark">Beautiful Day with Friends</a></h5>
-                                                                        <p class="text-muted mb-0">10 Nov, 2020</p>
-                                                                    </div>
-                                                                </div>
-        
-                                                                <div class="dropdown ms-2">
-                                                                    <a class="text-muted font-size-14" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a class="dropdown-item" href="#">Action</a>
-                                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-
-                                                        <li class="list-group-item py-3">
-                                                            <div class="d-flex">
-                                                                <div class="me-3">
-                                                                    <img src="assets/images/small/img-1.jpg" alt="" class="avatar-md h-auto d-block rounded"/>
-                                                                </div>
-                                                                    
-                                                                <div class="align-self-center overflow-hidden me-auto">
-                                                                    <div>
-                                                                        <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" class="text-dark">Riding bike on road</a></h5>
-                                                                        <p class="text-muted mb-0">20 Oct, 2020</p>
-                                                                    </div>
-                                                                </div>
-        
-                                                                <div class="dropdown ms-2">
-                                                                    <a class="text-muted font-size-14" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a class="dropdown-item" href="#">Action</a>
-                                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-
-                                                        <li class="list-group-item py-3">
-                                                            <div class="d-flex">
-                                                                <div class="me-3">
-                                                                    <img src="assets/images/small/img-2.jpg" alt="" class="avatar-md h-auto d-block rounded"/>
-                                                                </div>
-                                                                    
-                                                                <div class="align-self-center overflow-hidden me-auto">
-                                                                    <div>
-                                                                        <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" class="text-dark">Project discussion with team</a></h5>
-                                                                        <p class="text-muted mb-0">24 Oct, 2020</p>
-                                                                    </div>
-                                                                </div>
-        
-                                                                <div class="dropdown ms-2">
-                                                                    <a class="text-muted font-size-14" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a class="dropdown-item" href="#">Action</a>
-                                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-
-                                                    </ul>
-                                                </div>
-                                               
-                                            </div>
-                                         
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="col-xl-4 col-lg-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex flex-wrap align-items-start">
-                                            <div class="me-2">
-                                                <h5 class="card-title mb-3">Comments</h5>
-                                            </div>
-                                            <div class="dropdown ms-auto">
-                                                <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                </a>
-                                              
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Action</a>
-                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div data-simplebar style="max-height: 310px;">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item py-3">
-                                                    <div class="d-flex">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <div class="avatar-xs">
-                                                                <div class="avatar-title rounded-circle bg-light text-primary">
-                                                                    <i class="bx bxs-user"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="font-size-14 mb-1">Delores Williams <small class="text-muted float-end">1 hr Ago</small></h5>
-                                                            <p class="text-muted">If several languages coalesce, the grammar of the resulting of the individual</p>
-                                                            <div>
-                                                                <a href="javascript: void(0);" class="text-success"><i class="mdi mdi-reply me-1"></i> Reply</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="list-group-item py-3">
-                                                    <div class="d-flex">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <div class="avatar-xs">
-                                                                <img src="assets/images/users/avatar-2.jpg" alt="" class="img-fluid d-block rounded-circle"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="font-size-14 mb-1">Clarence Smith <small class="text-muted float-end">2 hrs Ago</small></h5>
-                                                            <p class="text-muted">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet</p>
-                                                            <div>
-                                                                <a href="javascript: void(0);" class="text-success"><i class="mdi mdi-reply"></i> Reply</a>
-                                                            </div>
-        
-                                                            <div class="d-flex pt-3">
-                                                                <div class="flex-shrink-0 me-3">
-                                                                    <div class="avatar-xs">
-                                                                        <div class="avatar-title rounded-circle bg-light text-primary">
-                                                                            <i class="bx bxs-user"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="flex-grow-1">
-                                                                    <h5 class="font-size-14 mb-1">Silvia Martinez <small class="text-muted float-end">2 hrs Ago</small></h5>
-                                                                    <p class="text-muted">To take a trivial example, which of us ever undertakes</p>
-                                                                    <div>
-                                                                        <a href="javascript: void(0);" class="text-success"><i class="mdi mdi-reply"></i> Reply</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="list-group-item py-3">
-                                                    <div class="d-flex">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <div class="avatar-xs">
-                                                                <div class="avatar-title rounded-circle bg-light text-primary">
-                                                                    <i class="bx bxs-user"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>  
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="font-size-14 mb-1">Keith McCoy <small class="text-muted float-end">12 Aug</small></h5>
-                                                            <p class="text-muted">Donec posuere vulputate arcu. phasellus accumsan cursus velit</p>
-                                                            <div>
-                                                                <a href="javascript: void(0);" class="text-success"><i class="mdi mdi-reply"></i> Reply</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                
-                                            </ul>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-xl-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex flex-wrap align-items-start">
-                                            <div class="me-2">
-                                                <h5 class="card-title mb-3">Top Visitors</h5>
-                                            </div>
-                                            <div class="dropdown ms-auto">
-                                                <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                </a>
-                                              
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Action</a>
-                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row text-center">
-                                            <div class="col-6">
-                                                <div class="mt-3">
-                                                    <p class="text-muted mb-1">Today</p>
-                                                    <h5>1024</h5>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-6">
-                                                <div class="mt-3">
-                                                    <p class="text-muted mb-1">This Month</p>
-                                                    <h5>12356 <span class="text-success font-size-13">0.2 % <i class="mdi mdi-arrow-up ms-1"></i></span></h5>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                       
-
-                                        <div>
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">
-                                                    <div class="py-2">
-                                                        <h5 class="font-size-14">California <span class="float-end">78%</span></h5>
-                                                        <div class="progress animated-progess progress-sm">
-                                                            <div class="progress-bar" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </li>    
-                                                <li class="list-group-item">
-                                                    <div class="py-2">
-                                                        <h5 class="font-size-14">Nevada <span class="float-end">69%</span></h5>
-                                                        <div class="progress animated-progess progress-sm">
-                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 69%" aria-valuenow="69" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <div class="py-2">
-                                                        <h5 class="font-size-14">Texas <span class="float-end">61%</span></h5>
-                                                        <div class="progress animated-progess progress-sm">
-                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 61%" aria-valuenow="61" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </li>   
-                                                
-                                            </ul>
-                                            
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                         
-                        </div>
-                       
-
-                        <div class="row">
-                            <div class="col-xl-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-start">
-                                            <div class="me-2">
-                                                <h5 class="card-title mb-4">Activity</h5>
-                                            </div>
-                                            <div class="dropdown ms-auto">
-                                                <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                </a>
-                                              
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Action</a>
-                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div data-simplebar class="mt-2" style="max-height: 280px;">
-                                            <ul class="verti-timeline list-unstyled">
-                                                <li class="event-list active">
-                                                    <div class="event-timeline-dot">
-                                                        <i class="bx bxs-right-arrow-circle font-size-18 bx-fade-right"></i>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <h5 class="font-size-14">10 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <div>
-                                                                Posted <span class="fw-semibold">Beautiful Day with Friends</span> blog... <a href="javascript: void(0);">View</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="event-list">
-                                                    <div class="event-timeline-dot">
-                                                        <i class="bx bx-right-arrow-circle font-size-18"></i>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <h5 class="font-size-14">08 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <div>
-                                                                If several languages coalesce, the grammar of the resulting... <a href="javascript: void(0);">Read</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="event-list">
-                                                    <div class="event-timeline-dot">
-                                                        <i class="bx bx-right-arrow-circle font-size-18"></i>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <h5 class="font-size-14">02 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <div>
-                                                                Create <span class="fw-semibold">Drawing a sketch blog</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="event-list">
-                                                    <div class="event-timeline-dot">
-                                                        <i class="bx bx-right-arrow-circle font-size-18"></i>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <h5 class="font-size-14">24 Oct <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <div>
-                                                                In enim justo, rhoncus ut, imperdiet a venenatis vitae
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="event-list">
-                                                    <div class="event-timeline-dot">
-                                                        <i class="bx bx-right-arrow-circle font-size-18"></i>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <h5 class="font-size-14">21 Oct <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <div>
-                                                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        
-                                        <div class="text-center mt-4"><a href="javascript: void(0);" class="btn btn-primary waves-effect waves-light btn-sm">View More <i class="mdi mdi-arrow-right ms-1"></i></a></div>
-                                    </div>
-                                </div>
-                               
-                            </div>
-        
-                            <div class="col-xl-8">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-start">
-                                            <div class="me-2">
-                                                <h5 class="card-title mb-4">Popular post</h5>
-                                            </div>
-                                            <div class="dropdown ms-auto">
-                                                <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                </a>
-
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Action</a>
-                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="table-responsive">
-                                            <table class="table align-middle table-nowrap mb-0">
-                                                <tr>
-                                                    <th scope="col" colspan="2">Post</th>
-                                                    <th scope="col">Likes</th>
-                                                    <th scope="col">Comments</th>
-                                                    <th scope="col">Action</th>
-                                                  </tr>
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="width: 100px;"><img src="assets/images/small/img-2.jpg" alt="" class="avatar-md h-auto d-block rounded"/></td>
-                                                        <td>
-                                                            <h5 class="font-size-13 text-truncate mb-1"><a href="javascript: void(0);" class="text-dark">Beautiful Day with Friends</a></h5>
-                                                            <p class="text-muted mb-0">10 Nov, 2020</p>
-                                                        </td>
-                                                        <td><i class="bx bx-like align-middle me-1"></i> 125</td>
-                                                        <td><i class="bx bx-comment-dots align-middle me-1"></i> 68</td>
-                                                        <td>
-                                                            <div class="dropdown">
-                                                                <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                                </a>
-                                                              
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item" href="#">Action</a>
-                                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                                    <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td><img src="assets/images/small/img-6.jpg" alt="" class="avatar-md h-auto d-block rounded"/></td>
-                                                        <td>
-                                                            <h5 class="font-size-13 text-truncate mb-1"><a href="javascript: void(0);" class="text-dark">Drawing a sketch</a></h5>
-                                                            <p class="text-muted mb-0">02 Nov, 2020</p>
-                                                        </td>
-                                                        <td><i class="bx bx-like align-middle me-1"></i> 102</td>
-                                                        <td><i class="bx bx-comment-dots align-middle me-1"></i> 48</td>
-                                                        <td>
-                                                            <div class="dropdown">
-                                                                <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                                </a>
-                                                              
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item" href="#">Action</a>
-                                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                                    <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td><img src="assets/images/small/img-1.jpg" alt="" class="avatar-md h-auto d-block rounded"/></td>
-                                                        <td>
-                                                            <h5 class="font-size-13 text-truncate mb-1"><a href="javascript: void(0);" class="text-dark">Riding bike on road</a></h5>
-                                                            <p class="text-muted mb-0">24 Oct, 2020</p>
-                                                        </td>
-                                                        <td><i class="bx bx-like align-middle me-1"></i> 98</td>
-                                                        <td><i class="bx bx-comment-dots align-middle me-1"></i> 35</td>
-                                                        <td>
-                                                            <div class="dropdown">
-                                                                <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                                </a>
-                                                              
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item" href="#">Action</a>
-                                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                                    <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td><img src="assets/images/small/img-2.jpg" alt="" class="avatar-md h-auto d-block rounded"/></td>
-                                                        <td>
-                                                            <h5 class="font-size-13 text-truncate mb-1"><a href="javascript: void(0);" class="text-dark">Project discussion with team</a></h5>
-                                                            <p class="text-muted mb-0">15 Oct, 2020</p>
-                                                        </td>
-                                                        <td><i class="bx bx-like align-middle me-1"></i> 92</td>
-                                                        <td><i class="bx bx-comment-dots align-middle me-1"></i> 22</td>
-                                                        <td>
-                                                            <div class="dropdown">
-                                                                <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                                </a>
-                                                              
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item" href="#">Action</a>
-                                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                                    <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            
-                                              
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
-                      
-                        
-                    </div> 
-                </div>
-               
-
-                
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © AFAR.
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="text-sm-end d-none d-sm-block">
-                                    Design & Develop by SKOLLS
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-        
-
-        </div>
-     
-        <div class="right-bar">
-            <div data-simplebar class="h-100">
-                <div class="rightbar-title d-flex align-items-center px-3 py-4">
-            
-                    <h5 class="m-0 me-2">Settings</h5>
-
-                    <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
-                        <i class="mdi mdi-close noti-icon"></i>
-                    </a>
-                </div>
-
-                
-                <hr class="mt-0" />
-                <h6 class="text-center mb-0">Choose Layouts</h6>
-
-                <div class="p-4">
-                    <div class="mb-2">
-                        <img src="assets/images/layouts/layout-1.jpg" class="img-thumbnail" alt="layout images"/>
-                    </div>
-
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input theme-choice" type="checkbox" id="light-mode-switch" checked/>
-                        <label class="form-check-label" for="light-mode-switch">Light Mode</label>
-                    </div>
-    
-                    <div class="mb-2">
-                        <img src="assets/images/layouts/layout-2.jpg" class="img-thumbnail" alt="layout images"/>
-                    </div>
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input theme-choice" type="checkbox" id="dark-mode-switch"/>
-                        <label class="form-check-label" for="dark-mode-switch">Dark Mode</label>
-                    </div>
-    
-                    <div class="mb-2">
-                        <img src="assets/images/layouts/layout-3.jpg" class="img-thumbnail" alt="layout images"/>
-                    </div>
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input theme-choice" type="checkbox" id="rtl-mode-switch"/>
-                        <label class="form-check-label" for="rtl-mode-switch">RTL Mode</label>
-                    </div>
-
-                    <div class="mb-2">
-                        <img src="assets/images/layouts/layout-4.jpg" class="img-thumbnail" alt="layout images"/>
-                    </div>
-                    <div class="form-check form-switch mb-5">
-                        <input class="form-check-input theme-choice" type="checkbox" id="dark-rtl-mode-switch"/>
-                        <label class="form-check-label" for="dark-rtl-mode-switch">Dark RTL Mode</label>
-                    </div>
-
-            
-                </div>
-
-            </div> 
-        </div>
-        </div>
-
-        </div>
-
-    )
 }
 
-export default dashboard;
+    /////////// Update ////////////////
+    const {updata, setUPdata} = React.useContext(updatedata);
+
+    ///////////// pdf /////////////////
+/*
+
+const handlePDF= () => {
+    const doc = new jsPDF();
+    console.log(data);
+    let rows = [];
+data.map(i=>{
+    let temp = [
+        i.Name,
+        i.Etat,
+        i.Prix,
+        i.Marque,
+      ];
+      rows.push(temp);
+})
+    doc.autoTable({    	
+        head: [['Name', 'Etat', 'Prix', 'Marque']],
+        body:  rows
+        ,
+      })
+      doc.save('listepieces.pdf')
+}
+*/
+ 
+
+ 
+
+
+
+$(document).ready(function () {
+    setTimeout(function(){
+    $('#example').DataTable();
+     } ,1000);
+});
+
+    return(
+        
+
+    
+        
+
+
+
+        <div>
+
+
+
+{/* 
+                
+<div class="vertical-menu">
+
+<div data-simplebar class="h-100">
+
+    
+    <div id="sidebar-menu">
+       
+        <ul class="metismenu list-unstyled" id="side-menu">
+        <li class="menu-title" key="t-apps">Menu</li>
+         <li>
+                <a href="myproducts" class="waves-effect">
+                    <i class="bx bx-user"></i>
+                    <span key="t-chat">MY ITEMS</span>
+                </a>
+            </li>
+        <li>
+                <a href="addUser" class="waves-effect">
+                    <i class="bx bx-file"></i>
+                    
+                    <span key="t-file-manager">Broken Piece</span>
+                </a>
+            </li>
+
+            
+
+            <li>
+                <a href="afficher" class="waves-effect">
+                    <i class="bx bx-chat"></i>
+                    <span key="t-chat">BROKEN ITEMS</span>
+                </a>
+            </li>
+            
+
+            
+
+           
+           
+            <li>
+                <a href="Home" class="waves-effect">
+                    <i class="bx bx-band-aid"></i>
+                    <span key="t-chat">SELL ITEMS</span>
+                </a>
+            </li>
+            <li>
+                <a href="affichage" class="waves-effect">
+                    <i class="bx bx-chat"></i>
+                    <span key="t-chat">NEW ITEMS</span>
+                </a>
+            </li>
+
+           
+            <li>
+                <a href="list" class="waves-effect">
+                    <i class="bx bx-car"></i>
+                    <span key="t-chat">Delivery</span>
+                </a>
+            </li>
+            <li>
+                <a href="listService" class="waves-effect">
+                    <i class="bx bx-book"></i>
+                    <span key="t-chat"> Services</span>
+                </a>
+            </li>
+
+                                        
+
+        </ul>
+    </div>
+ 
+</div>
+</div> */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {/* {
+                updata ?
+                    <>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>{updata.name}</strong>  updated succesfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </> : ""
+            } */}
+
+
+
+
+
+            <div id="layout-wrapper">
+
+
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="main-content">
+
+                    <div class="page-content">
+                        <div class="container-fluid">
+
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                        <h4 class="mb-sm-0 font-size-18 text-center">Users list</h4>
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+                            <div class="row">
+
+
+                                <div className="row">
+                                    <div className="col-12">
+                                        <div className="card">
+                                            <div className="card-body">
+
+                                    
+
+                                                
+                                                   
+
+                                                
+                                                <h4 className="card-title">Users list</h4>
+
+
+                                                <table id="example" class="table table-hover table-bordered"
+                                                       className="table table-bordered dt-responsive  nowrap w-150 styled-table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>  </th>
+                                                        <th>First name</th>
+                                                        <th>Last name</th>
+                                                        <th>E-mail</th>
+                                                        <th>Role</th>
+                                                        <th>Actions</th>
+                                                        
+
+
+                                                    </tr>
+                                                    </thead>
+
+
+                                                    <tbody>
+                                                    {data && data.map((user,index) => {
+                                                        return (
+
+                                                            <tr key={index}>
+                                                                <th>{index+1}</th>
+                                                                <td>{user.firstName}</td>
+                                                                <td>{user.lastName}</td>
+                                                                <td>{user.email}</td>
+                                                                <td>{user.roles}</td>
+
+
+                                                                <td>
+                                               
+                                                                    <button class="btn btn-danger" onClick={() => onDeleteUser(user._id)}> Delete</button>
+                                                                    <button class="btn btn-danger" onClick={() => onBanUser(user._id)}> Ban </button>
+                                                                    <button class="btn btn-successr" onClick={() => onUnBanUser(user._id)}> Unban </button>
+                                                               
+                                                                </td>
+
+                                                            </tr>
+
+                                                        )
+                                                    })}
+
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                    <footer class="footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <script>document.write(new Date().getFullYear())</script> © ✮Afar✮.
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="text-sm-end d-none d-sm-block">
+                                        Designed and Developped by SKOLLS
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="right-bar">
+                <div data-simplebar class="h-100">
+                    <div class="rightbar-title d-flex align-items-center px-3 py-4">
+
+                        <h5 class="m-0 me-2">Settings</h5>
+
+                        <a href="#/" class="right-bar-toggle ms-auto">
+                            <i class="mdi mdi-close noti-icon"></i>
+                        </a>
+                    </div>
+
+
+                    <hr class="mt-0" />
+                    <h6 class="text-center mb-0">Choose Layouts</h6>
+
+                    <div class="p-4">
+                        <div class="mb-2">
+                            <img src="assets/images/layouts/layout-1.jpg" class="img-thumbnail" alt="layout images"/>
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input theme-choice" type="checkbox" id="light-mode-switch" checked />
+                            <label class="form-check-label" for="light-mode-switch">Light Mode</label>
+                        </div>
+
+                        <div class="mb-2">
+                            <img src="assets/images/layouts/layout-2.jpg" class="img-thumbnail" alt="layout images"/>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input theme-choice" type="checkbox" id="dark-mode-switch"/>
+                            <label class="form-check-label" for="dark-mode-switch">Dark Mode</label>
+                        </div>
+
+                        <div class="mb-2">
+                            <img src="assets/images/layouts/layout-3.jpg" class="img-thumbnail" alt="layout images"/>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input theme-choice" type="checkbox" id="rtl-mode-switch"/>
+                            <label class="form-check-label" for="rtl-mode-switch">RTL Mode</label>
+                        </div>
+
+                        <div class="mb-2">
+                            <img src="assets/images/layouts/layout-4.jpg" class="img-thumbnail" alt="layout images"/>
+                        </div>
+                        <div class="form-check form-switch mb-5">
+                            <input class="form-check-input theme-choice" type="checkbox" id="dark-rtl-mode-switch"/>
+                            <label class="form-check-label" for="dark-rtl-mode-switch">Dark RTL Mode</label>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="rightbar-overlay"></div>
+
+
+      
+
+
+            <script src="assets/libs/jquery/jquery.min.js"></script>
+            <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="assets/libs/metismenu/metisMenu.min.js"></script>
+            <script src="assets/libs/simplebar/simplebar.min.js"></script>
+            <script src="assets/libs/node-waves/waves.min.js"></script>
+
+            <script src="assets/js/app.js"></script>
+            <script src="assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+            <script src="assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+            <script src="assets/libs/jquery/jquery.min.js"></script>
+            <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="assets/libs/metismenu/metisMenu.min.js"></script>
+            <script src="assets/libs/simplebar/simplebar.min.js"></script>
+            <script src="assets/libs/node-waves/waves.min.js"></script>
+
+            <script src="assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+            <script src="assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+            <script src="assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+            <script src="assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+            <script src="assets/libs/jszip/jszip.min.js"></script>
+            <script src="assets/libs/pdfmake/build/pdfmake.min.js"></script>
+            <script src="assets/libs/pdfmake/build/vfs_fonts.js"></script>
+            <script src="assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+            <script src="assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+            <script src="assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+            <script src="assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+            <script src="assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+            <script src="assets/js/pages/datatables.init.js"></script>
+
+            <script src="assets/js/app.js"></script>
+
+            <script src="jspdf.min.js"></script>
+            <script src="jspdf.plugin.autotable.min.js"></script>
+
+            <link href="assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+            <link href="assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+        </div>
+
+
+
+    )
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+export default Dash;

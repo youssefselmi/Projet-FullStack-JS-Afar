@@ -37,7 +37,7 @@ const sendEmailverified = (receiver) => {
     })
 
     const mailOptions = {
-        from: 'mohamedhabib.benhlima@esprit.tn',
+        from: 'Afar-team',
         to : receiver,
         subject: "Welcome to ✮AFAR✮",
         html: `

@@ -7,14 +7,64 @@ import { adddata } from './context/ContextProvider';
 import {axios} from 'axios'
 import {toast} from "react-toastify";
 
-const Register = ()=>{
+export default function Register(){
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+   
+
+    const history = useNavigate();
+
+    
+       const [firstName,setfirstName] = useState("");
+       const [lastName,setlastName] = useState("");
+       const [email,setEmail] = useState("");
+       const [password,setPassword] = useState("");
+       
 
 
-   return (
-    <div class="account-pages my-5 pt-sm-5">
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log("BEFORE FETCH");
+        const res = await fetch("http://localhost:3000/users/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                firstName,lastName,email,password
+            })
+        });
+
+        console.log("AFTER FETCH");
+        const data = await res.json();
+        console.log(data);
+        
+
+        localStorage.setItem("user_id", data.result._id);
+      
+
+   if(res.status === 400){
+            toast.warn("Email is already in use.");
+        
+
+    } else
+        {
+            console.log("ENTRER THE ELSE.")
+            history("/registerVerification")
+            toast.success("Your account has been registered. You can now Sign in");
+           
+        }
+
+       //toast.success("");
+
+
+
+    }
+
+    return(
+        <React.Fragment>
+            <div class="account-pages my-5 pt-sm-5">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-8 col-lg-6 col-xl-5">
@@ -24,11 +74,11 @@ const Register = ()=>{
                                     <div class="col-7">
                                         <div class="text-primary p-4">
                                             <h5 class="text-primary">Free Register</h5>
-                                            <p>Get your free AFAR account now.</p>
+                                            <p>Get your free Afar account now.</p>
                                         </div>
                                     </div>
                                     <div class="col-5 align-self-end">
-                                        <img src="assets/images/loogo.png" alt="" class="img-fluid"/>
+                                        <img src="assets/images/profile-img.png" alt="" class="img-fluid"/>
                                     </div>
                                 </div>
                             </div>
@@ -43,62 +93,61 @@ const Register = ()=>{
                                     </a>
                                 </div>
                                 <div class="p-2">
-                                    <form class="needs-validation" novalidate action="https://themesbrand.com/skote-django/layouts/index.html">
-            
-                                        <div class="mb-3">
-                                            <label for="useremail" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="useremail" placeholder="Enter email" required/>  
-                                            <div class="invalid-feedback">
-                                                Please Enter Email
-                                            </div>      
-                                        </div>
-                
-                                        <div class="mb-3">
-                                            <label for="username" class="form-label">Username</label>
-                                            <input type="text" class="form-control" id="username" placeholder="Enter username" required/>
-                                            <div class="invalid-feedback">
-                                                Please Enter Username
-                                            </div>  
-                                        </div>
-                
-                                        <div class="mb-3">
-                                            <label for="userpassword" class="form-label">Password</label>
-                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password" required/>
-                                            <div class="invalid-feedback">
-                                                Please Enter Password
-                                            </div>       
-                                        </div>
-                    
-                                        <div class="mt-4 d-grid">
-                                            <button class="btn btn-primary waves-effect waves-light" type="submit">Register</button>
-                                        </div>
+                                <form class="form-horizontal" onSubmit={handleSubmit}>
+        
+        <div class="mb-3">
+            <label htmlFor="email" class="form-label">E-mail</label>
+            <input type="text" required value={email}class="form-control" id="email" placeholder="Enter e-mail" onChange={(e)=>setEmail(e.target.value)}/>
+        </div>
+        <div class="mb-3">
+            <label htmlFor="firstName" class="form-label">First name</label>
+            <input type="text" required value={firstName}class="form-control" id="firstName" placeholder="Enter first name" onChange={(e)=>setfirstName(e.target.value)}/>
+        </div>
+        <div class="mb-3">
+            <label htmlFor="lastName" class="form-label">Last name</label>
+            <input type="text" required value={lastName}class="form-control" id="lastName" placeholder="Enter last name" onChange={(e)=>setlastName(e.target.value)}/>
+        </div>
 
-                                        <div class="mt-4 text-center">
-                                            <h5 class="font-size-14 mb-3">Sign up using</h5>
-            
-                                            <ul class="list-inline">
-                                                <li class="list-inline-item">
-                                                    <a href="javascript::void()" class="social-list-item bg-primary text-white border-primary">
-                                                        <i class="mdi mdi-facebook"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="javascript::void()" class="social-list-item bg-info text-white border-info">
-                                                        <i class="mdi mdi-twitter"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="javascript::void()" class="social-list-item bg-danger text-white border-danger">
-                                                        <i class="mdi mdi-google"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                
-                                        <div class="mt-4 text-center">
-                                            <p class="mb-0">By registering you agree to the Skote <a href="#" class="text-primary">Terms of Use</a></p>
-                                        </div>
-                                    </form>
+        <div class="mb-3">
+            <label htmlFor= "password" class="form-label">Password</label>
+            <div class="input-group auth-pass-inputgroup">
+                <input type="password" required id = "password" value = {password} onChange={(e)=> setPassword(e.target.value)} class="form-control" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon"/>
+                <button class="btn btn-light " type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
+            </div>
+        </div>
+
+       
+        
+        <div class="mt-3 d-grid">
+            <button class="btn btn-primary waves-effect waves-light" type="submit">Sign Up</button>
+        </div>
+
+        <div class="mt-4 text-center">
+            <h5 class="font-size-14 mb-3">Sign in with</h5>
+
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="javascript::void()" class="social-list-item bg-primary text-white border-primary">
+                        <i class="mdi mdi-facebook"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="javascript::void()" class="social-list-item bg-info text-white border-info">
+                        <i class="mdi mdi-twitter"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="javascript::void()" class="social-list-item bg-danger text-white border-danger">
+                        <i class="mdi mdi-google"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-4 text-center">
+        <span> <Link to = "/PasswordRecover"> Forgot your password ? </Link> </span>
+        </div>
+    </form>
                                 </div>
             
                             </div>
@@ -106,8 +155,8 @@ const Register = ()=>{
                         <div class="mt-5 text-center">
                             
                             <div>
-                            <span>Don't have an account ? <Link to = "/auth"> Login </Link> </span>
-                                <p>© <script>document.write(new Date().getFullYear())</script> AFAR. Crafted with <i class="mdi mdi-heart text-danger"></i> by SKOLLS</p>
+                            <span>Already have an account ? <Link to = "/"> Sign in now </Link> </span>
+                                <p>© 2022 AFAR. Crafted with <i class="mdi mdi-heart text-danger"></i> by SKOLLS</p>
                             </div>
                         </div>
 
@@ -115,8 +164,6 @@ const Register = ()=>{
                 </div>
             </div>
         </div>
-
-    )
+        </React.Fragment>
+        );
 }
-
-export default Register;

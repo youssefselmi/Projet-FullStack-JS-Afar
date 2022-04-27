@@ -1,160 +1,163 @@
-
 var express = require('express');
-var multer = require ('multer');
+const User = require('../models/user');
 var router = express.Router();
- const cors = require('cors');
- const bcrypt = require('bcryptjs');
- const jwt = require("jsonwebtoken");
+const Users = require('../models/user');
+const userController  = require ('../controllers/userController')
+var multer = require("multer");
+const cors =require('cors');
 
- const secret = "test";
-
- const UserModal = require("../models/user");
- const User = require("../models/user");
 router.use(cors({
-    origin:'*'
+    origin: '*'
 }));
+
+//MULTER CONFIG
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "./uploads");
-    },
-    filename: (req, file, cb) => {
-      cb(null, `${file.fieldname}_${+new Date()}.jpg`);
-    }
-  });
-  const upload = multer({
-    storage
-  });
-  router.post("/login",async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      const oldUser = await UserModal.findOne({ email });
-  
-      if (!oldUser)
-        return res.status(404).json({ message: "User doesn't exist" });
-  
-      const isPasswordCorrect = await bcrypt.compare(password, oldUser.password);
-  
-      if (!isPasswordCorrect)
-        return res.status(400).json({ message: "Invalid credentials" });
-  
-      const token = jwt.sign({ email: oldUser.email, id: oldUser._id },secret, {
-        expiresIn: "1h",
-      });
-  
-      res.status(200).json({ result: oldUser, token });
-    } catch (err) {
-      res.status(500).json({ message: "Something went wrong" });
-    }
-  });
-  
-
-  router.post('/register'/*,upload.single("photo")*/,async (req,res)=> {
-    
-    const { email, password, firstName, lastName } = req.body;
-
-    try {
-      const oldUser = await UserModal.findOne({ email });
-  
-      if (oldUser)
-        return res.status(400).json({ message: "User already exists" });
-  
-      const hashedPassword = await bcrypt.hash(password, 12);
-  
-      const result = await  UserModal.create({
-        email,
-        password: hashedPassword,
-        name: `${firstName} ${lastName}`,
-      });
-  
-      const token = jwt.sign({ email: result.email, id: result._id }, secret, {
-        expiresIn: "1h",
-      });
-  
-      res.status(201).json({ result, token });
-    } catch (error) {
-      res.status(500).json({ message: "Something went wrong" });
-  
-      console.log(error);
-    }
-})
-
-
-router.put('/passwordreset/:resetToken', async(req, res, next) => {
-    const resetPasswordToken = crypto
-      .createHash("sha256")
-      .update(req.params.resetToken)
-      .digest("hex");
-  
-    try {
-      const user = await User.findOne({
-        resetPasswordToken,
-        resetPasswordExpire: { $gt: Date.now() },
-      });
-  
-      if (!user) {
-        return next(new ErrorResponse("Invalid Token", 400));
-      }
-  
-      user.password = req.body.password;
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-  
-      await user.save();
-  
-      res.status(201).json({
-        success: true,
-        data: "Password Updated Success",
-        token: user.getSignedJwtToken(),
-      });
-    } catch (err) {
-      next(err);
-    }
-  });
-  
-  const sendToken = (user, statusCode, res) => {
-    const token = user.getSignedJwtToken();
-    res.status(statusCode).json({ sucess: true, token });
-  };
-
-  router.get('/all',async(req,res)=>{
-    try{
-        const users = await User.find()
-        res.json(users)
-  
-    }catch(err){
-        res.send('Error' + err)
-    }
-  })
-  router.get('/:id',async(req,res)=>{
-    try{
-        const Auser = await User.findById(req.params.id)
-        res.json(Auser)
-  
-    }catch(err){
-        res.send('Error' + err)
-    }
-  })
-
-  router.put('/modifier/:id',async(req,res)=>{
-    try{
-        var Auser = await User.findById(req.params.id)
-        Auser.firstName = req.body.firstName
-        Auser.lastName = req.body.lastName
-        
-        Auser = await User.create(Auser)
-        res.json(Auser)
-
-    }catch(err){
-        res.send('Error'+ err)
-    }
-})
-
-router.delete('/delete/:id', async(req, res) => {
-
-  const id = req.params.id;
-  await User.findByIdAndRemove(id).exec();
-  res.send("user deleted");
+  destination: (req, file, cb) => {
+    cb(null, "../uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${file.fieldname}_${+new Date()}.jpg`);
+  }
 });
+//MULTER STORE FILE
+const upload = multer({
+  storage
+});
+
+
+
+
+
+
+
+
+
+//route for registration using oAuth2
+router.post('/register',userController.register);
+router.post('/verify-email',userController.verifyEmail);
+router.post('/PasswordRecovery',userController.PasswordRecovery);
+router.post('/PasswordRecoveryVerify',userController.PasswordRecoveryVerify)
+//dumbRoute
+
+router.post('/addinfo',upload.single('photo') ,async(req,res) =>{
   
+const {profession,location, interests,userid,avatar} = req.body;
+
+
+
+try{
+  const replaced = await User.findById(userid)
+  replaced.profession = profession;
+  replaced.location = location;
+  replaced.interests = interests.split(/(\s+)/);
+  replaced.additionalInfo = true;
+  replaced.avatar = avatar;
+
+  const messageBack = await replaced.save()
+  res.json(messageBack)
+
+}catch(err){
+  res.send('Error'+ err)
+}
+
+
+/*const saved = await user.save();
+
+if(saved) return res.status(200).json({success:true, user})
+  else return res.status(500).json({success:false, user})
+*/});
+
+
+
+
+router.get('/afficher',async(req,res)=>{
+  try{
+      const users = await User.find()
+      res.json(users)
+
+  }catch(err){
+      res.send('Error' + err)
+  }
+})
+
+router.get('/:id',async(req,res)=>{
+  try{
+      const user = await User.findById(req.params.id)
+      res.json(user)
+
+  }catch(err){
+      res.send('Error' + err)
+  }
+})
+
+router.get('/getUserFromEmail',async(req,res)=>{
+  const email = req.body.email;
+  try{
+      const user = await User.findOne(email)
+      res.json(user)
+  }catch(err){
+      res.send('Error' + err)
+  }
+})
+
+
+
+router.put('/modifier/:id',async(req,res)=>{
+  try{
+      const user = await User.findById(req.params.id)
+      user.firstname = req.body.firstname,
+      user.lastname  = req.body.lastname,
+      user.password = req.body.password
+      user.interests = req.body.interests.split(/(\s+)/);
+      user.location = req.body.location
+      user.profession = req.body.profession
+      
+      const messageBack = await user.save()
+      res.json(messageBack)
+
+  }catch(err){
+      res.send('Error'+ err)
+  }
+})
+
+
+
+router.put('/ban/:id',async(req,res)=>{
+  try{
+    const user = await User.findById(req.params.id)
+      user.accountState ="Banned"
+      const messageBack = await user.save()
+      res.json(messageBack)
+    
+
+  }catch(err){
+    res.send('Error'+ err)
+  }
+})
+
+router.put('/unban/:id',async(req,res)=>{
+  try{
+    const user = await User.findById(req.params.id)
+      user.accountState ="Active"
+      const messageBack = await user.save()
+      res.json(messageBack)
+    
+
+  }catch(err){
+    res.send('Error'+ err)
+  }
+})
+
+router.put('/delete/:id',async(req,res)=>{
+  try{
+      const user = await User.findById(req.params.id)
+      const messageBack = await user.remove()
+      res.json(messageBack)
+  }catch(err){
+    res.send('Error'+ err)
+  }
+})
+
+
+
 module.exports = router;

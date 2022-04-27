@@ -4,34 +4,35 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+    
     firstName: {
         type: String,
         trim: true,
+        required : true
         
-        //validate: [validateLocalStrategyProperty, 'Please fill in your first name']
     },
     lastName: {
         type: String,
         trim: true,
-        
-
-        
-       
-        //validate: [validateLocalStrategyProperty, 'Please fill in your last name']
+        required : true
     },
     email: {
         type: String,
         trim: true,
-        unique : true,
+        required : true,
+        unique : true
        
-        //validate: [validateLocalStrategyProperty, 'Please fill in your email'],
          
     },
     password: {
         type: String,
         required:true,
          
-        //validate: [validateLocalStrategyPassword, 'Password should be longer']
+    },
+    additionalInfo: {
+        type : Boolean,
+        required : true,
+        default : false
     },
     accountState: {
         type : [{
@@ -43,15 +44,30 @@ const UserSchema = new Schema({
     roles: {
         type: [{
             type: String,
-            enum: ['user','premiumUser', 'Admin']
+            enum: ['user','premiumUser', 'admin']
         }],
         default: ['user']
     },
-     
-     
-    /*profilepic:{
-        type: String
-    }*/
+     location : {
+         type : String,
+     },
+     interests : {
+         type : [ String]
+     },
+     profession : {
+         type : String,
+     },
+    avatar:{
+        type: String,
+        default :""
+    },
+    verified:{
+        type : Boolean,
+        default : false,
+        required : true
+    }
+    
+
 });
 
  

@@ -7,60 +7,51 @@ import { adddata } from './context/ContextProvider';
 import axios from 'axios'
 import {toast} from "react-toastify";
 
-export default function additionalInfo(){
+export default function passwordRecover(){
 
    
 
     const history = useNavigate();
 
-    
-       const [location,setLocation] = useState("");
-       const [interests,setInterests] = useState("");
-       const [profession,setProfession] = useState("");
-       const [avatar, setAvatar] = useState("");
-       //const [password,setPassword] = useState("");
-       
-
-
-        
-       // interests = interests.split(/(\s+)/);
+       const [email,setEmail] = useState("");
+ 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        /*const userid = localStorage.getItem("user_id")
-        console.log("BEFORE FETCH");
-        const res = await fetch("http://localhost:3000/users/addinfo", {
+
+        console.log("BEFORE FETCH - CHECK");
+
+        /*const res = await fetch("http://localhost:3000/users/verify-email", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                profession,location,interests,avatar,userid
+                otp
             })
-        });
-        */
-        let  pathimage="assets/images/users/"+avatar.substr(12);
+        });*/
         
-        const userid = localStorage.getItem("user_id")
-    const res = await axios.post("http://localhost:3000/users/addinfo",{userid,avatar:pathimage,profession,location,interests});
+        
+        const res = await axios.post("http://localhost:3000/users/PasswordRecovery",{email});
 
-        console.log("AFTER FETCH");
        
         
-
+        
    if(res.status === 400){
-            toast.warn("Problem has been encountered. please remain indoors.");
+            toast.error("An Error has occured.");
         
 
     } else
         {
-            console.log("ENTRER THE ELSE.")
-            history("/userProfile")
-            toast.success("Your account has been registered You can now Sign in");
+            //localStorage.removeItem("user_id");
+            console.log("ENTRER THE ELSE. - CHECK")
+            history("/PasswordRecoverVerify")
+            toast.success("A secret code has been sent to your Email, you will need it to proceed.");
            
         }
 
-   
+       //toast.success("");
+
 
 
     }
@@ -76,8 +67,8 @@ export default function additionalInfo(){
                                 <div class="row">
                                     <div class="col-7">
                                         <div class="text-primary p-4">
-                                            <h5 class="text-primary">Additional information is required </h5>
-                                            <p>This is the last step, so we can better suit your needs</p>
+                                            <h5 class="text-primary"></h5>
+                                            <p>Get your Afar account back.</p>
                                         </div>
                                     </div>
                                     <div class="col-5 align-self-end">
@@ -96,32 +87,13 @@ export default function additionalInfo(){
                                     </a>
                                 </div>
                                 <div class="p-2">
-                                <form class="form-horizontal" enctype="multipart/form-data" onSubmit={handleSubmit}>
+                                <form class="form-horizontal" onSubmit={handleSubmit}>
         
         <div class="mb-3">
-            <label htmlFor="profession" class="form-label">Your profession</label>
-            <input type="text" required value={profession}class="form-control" id="profession" placeholder="Enter profession" onChange={(e)=>setProfession(e.target.value)}/>
+            <label htmlFor="email" class="form-label">Enter your email account here  </label>
+            <input type="text" required value={email}class="form-control" id="email" placeholder="Enter email" onChange={(e)=>setEmail(e.target.value)}/>
         </div>
-        <div class="mb-3">
-            <label htmlFor="location" class="form-label">Your location</label>
-            <input type="text" required value={location}class="form-control" id="location" placeholder="Enter Location" onChange={(e)=>setLocation(e.target.value)}/>
-        </div>
-        <div class="mb-3">
-            <label htmlFor="interests" class="form-label">Your interests</label>
-            <input type="text" required value={interests}class="form-control" id="interests" placeholder="Enter interests" onChange={(e)=>setInterests(e.target.value)}/>
-        </div>
-
-        <div class="mb-3">
-            <label htmlFor= "avatar" class="form-label">Avatar  </label>
-            <input
-          type="file"
-          id="avatar"
-          required
-          onChange={(e)=>setAvatar(e.target.value)}
-          name="avatar"
-        />
-            
-        </div>
+        
 
        
         
@@ -129,11 +101,7 @@ export default function additionalInfo(){
             <button class="btn btn-primary waves-effect waves-light" type="submit">Confirm</button>
         </div>
 
-        
-
-        <div class="mt-4 text-center">
-            <a href="auth-recoverpw.html" class="text-muted"><i class="mdi mdi-lock me-1"></i> Forgot your password?</a>
-        </div>
+    
     </form>
                                 </div>
             
@@ -142,7 +110,6 @@ export default function additionalInfo(){
                         <div class="mt-5 text-center">
                             
                             <div>
-                            <span>Already have an account ? <Link to = "/"> Sign in now </Link> </span>
                                 <p>© 2022 AFAR. Crafted with <i class="mdi mdi-heart text-danger"></i> by SKOLLS</p>
                             </div>
                         </div>
