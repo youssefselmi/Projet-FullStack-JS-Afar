@@ -370,7 +370,10 @@ import { Link } from "react-router-dom";
                     </div>
                   </div>
                   <div className="dropdown d-inline-block">
-                  <Link to={`/Confirmation`}>
+                  <Link to={`/demande`}>
+                   <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">Demande</button>
+                    </Link>
+                  <Link to={`/add`}>
                    <button type="button" className="btn btn-info btn-rounded waves-effect waves-light">+registration</button>
                     </Link>
                     <button type="button" className="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
