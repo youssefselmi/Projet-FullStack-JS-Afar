@@ -68,7 +68,7 @@ export default function AddLivreur (props){
   if (res.status === 422 || !data) {
       console.log("error ");
       alert("error");
-      toast.warning("delevry is not added");
+      toast.warning("E-mail already taken");
 
   } else {
     
@@ -79,7 +79,11 @@ export default function AddLivreur (props){
     alert("Mail Send")
     
       history("/list")
-      toast.success(" delevry is Added");
+      toast.success(" delevry is Added",{
+        position: toast.POSITION.TOP_CENTER,
+        autoClose:2000
+
+      });
   }
 
 
