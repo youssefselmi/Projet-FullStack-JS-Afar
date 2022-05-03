@@ -11,6 +11,8 @@ router.use(cors({
     origin: '*'
 }));
 router.get('/list',async(req,res)=>{
+  
+
   try{
       const livreurs = await Livreur.find()
       res.json(livreurs)
@@ -41,6 +43,41 @@ router.delete('/supprimer/:id',async(req,res)=>{
   
     })
 });
+
+router.get('/listt',async(req,res,next)=>{
+  const pageSize = 8;
+  const page = Number(req.query.pageNumber) || 1;
+  const count = await Livreur.find().estimatedDocumentCount();
+
+
+  try {
+    const livreurs = await Livreur.find().sort({createdAt: -1}).populate()
+    .skip(pageSize * (page-1))
+    .limit(pageSize)
+
+    res.status(200).json({
+        success: true,
+        livreurs,
+        page,
+        pages: Math.ceil(count / pageSize),
+        count
+    })
+    next();
+} catch (error) {
+    return next(new ErrorResponse('Server error', 500));
+}
+})
+
+router.get('/:id',async(req,res)=>{
+  try{
+      const livreurs = await Livreur.findById(req.params.id)
+      res.json(livreurs)
+
+  }catch(err){
+      res.send('Error' + err)
+  }
+})
+
 
   
 router.post('/add',async(req,res,next)=> {
@@ -93,8 +130,8 @@ router.post('/mail',async(req,res,next)=> {
     },
   });
   const{ email,region }=req.body;
-    var maillist = [ await Livreur.findOne({ email })  ];
-    var livreurRegion = [ await Livreur.findOne({ region })  ];
+    var maillist = [ await Livreur.find({ email })  ];
+    var livreurRegion = [ await Livreur.find({ region })  ];
     //var userRegion= [ await User.findOne({ region })  ];
     
     var msg = {
